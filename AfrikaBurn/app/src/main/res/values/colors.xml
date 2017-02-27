@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ff390c13</color>
+    <color name="colorPrimaryDark">#ff150205</color>
+    <color name="colorAccent">#ffF36C56</color>
+
+    <color name="colour_burnback_dark">#ff110d0d</color>
+    <color name="colour_burnback_mid">#ff390c13</color>
+    <color name="colour_burn_bright_red">#ffC7112F</color>
+    <color name="colour_burn_bright_yellow">#ffFFF800</color>
+    <color name="colour_burn_bright_orange">#ffF18F07</color>
+    <color name="colour_burn_bright_pink">#ffF36C56</color>
+</resources>
