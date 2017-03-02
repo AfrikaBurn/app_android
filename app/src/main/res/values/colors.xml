@@ -34,4 +34,5 @@
     <color name="colour_burn_bright_yellow">#ffFFF800</color>
     <color name="colour_burn_bright_orange">#ffF18F07</color>
     <color name="colour_burn_bright_pink">#ffF36C56</color>
+    <color name="colour_splash">#ffF36C56</color>
 </resources>

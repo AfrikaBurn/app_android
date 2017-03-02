@@ -24,7 +24,7 @@
 
 apply plugin: 'com.android.application'
 
-if(project.hasProperty("AB.signing")
+if (project.hasProperty("AB.signing")
         && new File(project.property("AB.signing") + ".gradle").exists()) {
     apply from: project.property("AB.signing") + ".gradle";
 }
