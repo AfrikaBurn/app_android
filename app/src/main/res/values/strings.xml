@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">AfrikaBurn</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_theme">Camps</string>
+    <string name="title_infrastructure">Infrastructure</string>
+    <string name="title_burns">Burns</string>
+    <string name="title_performance">Performances</string>
+    <string name="title_mutant_vehicles">Mutant Vehicles</string>
+    <string name="title_favorite">Favourites</string>
+    <string name="title_artworks">Artworks</string>
 </resources>

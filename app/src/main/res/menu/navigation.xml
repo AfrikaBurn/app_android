@@ -2,18 +2,35 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home"/>
+        android:id="@+id/navigation_theme_camps"
+        android:icon="@drawable/ic_theme"
+        android:title="@string/title_theme"/>
+    <item
+        android:id="@+id/navigation_artworks"
+        android:icon="@drawable/ic_artworks"
+        android:title="@string/title_artworks"/>
 
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard"/>
+        android:id="@+id/navigation_infrastructure"
+        android:icon="@drawable/ic_infrastructure"
+        android:title="@string/title_infrastructure"/>
+
+    <!--<item-->
+        <!--android:id="@+id/navigation_performance"-->
+        <!--android:icon="@drawable/ic_performances"-->
+        <!--android:title="@string/title_performance"/>-->
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications"/>
+        android:id="@+id/navigation_burn"
+        android:icon="@drawable/ic_burns"
+        android:title="@string/title_burns"/>
+    <item
+        android:id="@+id/navigation_mutant_vehicles"
+        android:icon="@drawable/ic_mutant_vehicles"
+        android:title="@string/title_mutant_vehicles"/>
+    <!--<item-->
+        <!--android:id="@+id/navigation_favourites"-->
+        <!--android:icon="@drawable/ic_favorite"-->
+        <!--android:title="@string/title_favorite"/>-->
 
 </menu>

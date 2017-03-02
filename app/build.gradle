@@ -1,10 +1,15 @@
 apply plugin: 'com.android.application'
 
+if(project.hasProperty("AB.signing")
+        && new File(project.property("AB.signing") + ".gradle").exists()) {
+    apply from: project.property("AB.signing") + ".gradle";
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "net.maiatday.afrikaburn"
+        applicationId "net.maiatoday.afrikaburn"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
