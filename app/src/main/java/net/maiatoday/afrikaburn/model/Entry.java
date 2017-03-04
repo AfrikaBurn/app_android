@@ -26,6 +26,8 @@ package net.maiatoday.afrikaburn.model;
 
 import android.support.annotation.IntDef;
 
+import net.maiatoday.afrikaburn.R;
+
 import java.lang.annotation.Retention;
 import java.util.Date;
 
@@ -45,6 +47,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 public class Entry implements RealmModel {
     @PrimaryKey
     @Required
+    public
     String id;
     @Required
     public String title;
@@ -61,11 +64,34 @@ public class Entry implements RealmModel {
     /// longitude :D
     public Double longitude;
     /// Favourite - only stored locally
-    boolean favourite;
+    public boolean favourite;
 
     String getStartText() {
         //TODO format the start time if it exists
         return "Thursday 20 to 7";
+    }
+
+
+    public static final String WHAT = "what";
+    public static final String FAVOURITE = "favourite";
+
+    public static int whatToDrawableId(int what) {
+        switch (what) {
+            case THEME_CAMP:
+                return R.drawable.ic_theme;
+            case ART_WORK:
+                return R.drawable.ic_artworks;
+            case BURN:
+                return R.drawable.ic_burns;
+            case PERFORMANCE:
+                return R.drawable.ic_performances;
+            case MUTANT_VEHICLE:
+                return R.drawable.ic_mutant_vehicles;
+            case CLAN:
+                return R.drawable.ic_infrastructure;
+            default:
+                return R.drawable.ic_theme;
+        }
     }
 
     @Retention(SOURCE)

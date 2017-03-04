@@ -33,6 +33,7 @@ import com.google.android.gms.gcm.OneoffTask;
 import com.google.android.gms.gcm.TaskParams;
 
 import net.maiatoday.afrikaburn.model.Entry;
+import net.maiatoday.afrikaburn.model.FakeData;
 import net.maiatoday.afrikaburn.model.Home;
 
 import java.util.Date;
@@ -53,7 +54,7 @@ public class DataFetchService extends GcmTaskService {
         Realm realm = Realm.getDefaultInstance();
         // Put the data into Realm
         // Add fake data for now TODO remove
-        generateFakeData(realm); //TODO remove
+        FakeData.generateFakeData(realm); //TODO remove
         realm.close();
         return GcmNetworkManager.RESULT_SUCCESS;
     }
@@ -65,72 +66,12 @@ public class DataFetchService extends GcmTaskService {
         OneoffTask task = new OneoffTask.Builder()
                 .setService(DataFetchService.class)
                 .setTag(TASK_TAG_FETCH_DATA)
-                .setUpdateCurrent(true)
-                .setExecutionWindow(0L, 30L)
+                .setUpdateCurrent(true) // If there is a pending job, do this one
+                .setExecutionWindow(0L, 30L) // within the next 30 seconds when convenient
                // .setRequiredNetwork(Task.NETWORK_STATE_ANY) //TODO set the required network once we really access the interwebz
                 .build();
 
         GcmNetworkManager.getInstance(context.getApplicationContext()).schedule(task);
-    }
-
-
-    public static void generateFakeData(Realm realm) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                // set data fetching flag to true
-                Home home;
-                RealmResults<Home> homeResults = realm.where(Home.class).findAll();
-                if (homeResults.isEmpty()) {
-                    home = realm.createObject(Home.class);
-                } else {
-                    home = homeResults.get(0); //Always only one
-                }
-                home.busyFetching = true;
-                //First delete all the previous sample data
-                realm.where(Entry.class).findAll().deleteAllFromRealm();
-
-                // Theme camps
-                oneEntry(realm, "Camp Lorem", "Fresh lorem in the morning, spiced ipsum at lunch, steaped dolor at midnight", Entry.THEME_CAMP);
-                oneEntry(realm, "Camp Ipsum", "Spiced ipsum at lunch", Entry.THEME_CAMP);
-                oneEntry(realm, "Camp Dolor", "Steaped dolor at midnight", Entry.THEME_CAMP);
-
-                // Clan camps
-                oneEntry(realm, "DMV", "Department of mutant Vehicles", Entry.CLAN);
-                oneEntry(realm, "Sanctuary", "Help! I need somebody", Entry.CLAN);
-                oneEntry(realm, "Medics", "Help I need somebody, Not just anybody", Entry.CLAN);
-                oneEntry(realm, "Off centre camp", "Whoops", Entry.CLAN);
-
-                // Mutant vehicles
-                oneEntry(realm, "Huge Lorem snail", "Leaving slithering trails of LED light", Entry.MUTANT_VEHICLE);
-                oneEntry(realm, "Noizy dolor Bus", "Big noisy bus, filled with music. Surrounded by people dancing and picking up MOOP", Entry.MUTANT_VEHICLE);
-
-                // Performances
-                oneEntry(realm, " et pretium tortor faucibus", "Quisque rhoncus diam quis ex pharetra fringilla. Proin placerat dui non mi interdum, et pretium tortor faucibus.", Entry.PERFORMANCE);
-
-                // Artworks
-                oneEntry(realm, "nulla maximus libero", "Etiam imperdiet nulla maximus libero ultricies ultricies consequat eget libero", Entry.ART_WORK);
-
-                // Burns
-                oneEntry(realm, "lacus", "lacus lacus lacus lacus", Entry.BURN);
-                oneEntry(realm, "suscipit", "suscipit suscipitsuscipit suscipit", Entry.BURN);
-                oneEntry(realm, "tempus", "tempustempustempus tempus tempustempustempus", Entry.BURN);
-
-                home.busyFetching = false;
-                home.lastDataFetch = new Date();
-            }
-        });
-
-    }
-
-    private static void oneEntry(Realm realm, String title, String blurb, @Entry.What int what) {
-        String uuid = UUID.randomUUID().toString();
-        Entry e = realm.createObject(Entry.class, uuid);
-        e.title = title;
-        e.blurb = blurb;
-        e.what = what;
-        e.latitude = -32.3003346;
-        e.longitude = 19.9951357;
     }
 
 }

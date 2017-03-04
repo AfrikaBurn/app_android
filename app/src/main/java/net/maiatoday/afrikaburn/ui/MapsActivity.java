@@ -24,8 +24,12 @@
 
 package net.maiatoday.afrikaburn.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,25 +38,54 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import net.maiatoday.afrikaburn.BuildConfig;
 import net.maiatoday.afrikaburn.R;
 
 import io.realm.Realm;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static final String KEY_ID = BuildConfig.APPLICATION_ID +"."+ MapsActivity.class.getSimpleName()+".key_id";
 
     private GoogleMap mMap;
     // realm instance for UI actions (could have been in the application?
     protected Realm realm;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        getIntentInfo();
         realm = Realm.getDefaultInstance();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.map, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_main:
+                finish();
+                return true;
+            case R.id.action_search:
+//TODO do search stuff
+                return true;
+            case R.id.action_about:
+                startActivity(new Intent(this, AboutActivity.class));
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -79,5 +112,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onDestroy() {
         realm.close();
         super.onDestroy();
+    }
+
+    public static Intent makeIntent(Context context, String id) {
+        Intent i = new Intent(context, MapsActivity.class);
+        i.putExtra(KEY_ID, id);
+        return i;
+    }
+    private void getIntentInfo() {
+        Intent i = getIntent();
+        if (i.hasExtra(KEY_ID)) {
+            id = i.getStringExtra(KEY_ID);
+        } else {
+            id = "";
+        }
     }
 }

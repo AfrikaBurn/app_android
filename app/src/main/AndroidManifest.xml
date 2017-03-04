@@ -29,7 +29,7 @@
              The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
              Google Maps Android API v2, but you must specify either coarse or fine
              location permissions for the 'MyLocation' functionality.
-        -->
+    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
@@ -65,7 +65,7 @@
                  You need a different API key for each encryption key, including the release key that is used to
                  sign the APK for publishing.
                  You can define the keys for the debug and release targets in src/debug/ and src/release/.
-            -->
+        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key"/>
@@ -83,6 +83,15 @@
                 <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY"/>
             </intent-filter>
         </service>
+
+        <activity android:name=".ui.AboutActivity"
+                  android:parentActivityName=".ui.MainActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity"/>
+        </activity>
     </application>
 
 </manifest>

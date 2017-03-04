@@ -24,48 +24,17 @@
 
 package net.maiatoday.afrikaburn.ui;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
-import net.maiatoday.afrikaburn.BuildConfig;
 import net.maiatoday.afrikaburn.R;
 
-import io.realm.Realm;
-
-public class DetailActivity extends BaseActivity {
-
-    private static final String KEY_ID = BuildConfig.APPLICATION_ID +"."+ DetailActivity.class.getSimpleName()+".key_id";
-
-    String id;
+public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
-        getIntentInfo();
-    }
-
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    public static Intent makeIntent(Context context, String id) {
-        Intent i = new Intent(context, DetailActivity.class);
-        i.putExtra(KEY_ID, id);
-        return i;
-    }
-    private void getIntentInfo() {
-        Intent i = getIntent();
-        if (i.hasExtra(KEY_ID)) {
-            id = i.getStringExtra(KEY_ID);
-        } else {
-            id = "";
-        }
+        setContentView(R.layout.activity_about);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

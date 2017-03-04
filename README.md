@@ -9,7 +9,7 @@ You can build the app without the keystore file. If you need to build a release 
 ## How to debug with Realm and Stetho
 1. Open chrome and go to chrome://inspect
 2. Find the emulator and the AfrikaBurn powered by Stetho link
-3. click the ling and open WebSQL and then default.realm 
+3. click the link and open WebSQL and then default.realm 
 
 ## How to check if the background task to fetch data has run
 ` adb shell dumpsys activity service GcmService --endpoints DataFetchService

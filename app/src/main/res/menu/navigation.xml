@@ -48,13 +48,13 @@
         android:id="@+id/navigation_burn"
         android:icon="@drawable/ic_burns"
         android:title="@string/title_burns"/>
-    <item
-        android:id="@+id/navigation_mutant_vehicles"
-        android:icon="@drawable/ic_mutant_vehicles"
-        android:title="@string/title_mutant_vehicles"/>
     <!--<item-->
-        <!--android:id="@+id/navigation_favourites"-->
-        <!--android:icon="@drawable/ic_favorite"-->
-        <!--android:title="@string/title_favorite"/>-->
+        <!--android:id="@+id/navigation_mutant_vehicles"-->
+        <!--android:icon="@drawable/ic_mutant_vehicles"-->
+        <!--android:title="@string/title_mutant_vehicles"/>-->
+    <item
+        android:id="@+id/navigation_favourites"
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/title_favorite"/>
 
 </menu>

@@ -24,21 +24,29 @@
 
 package net.maiatoday.afrikaburn.ui;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import net.maiatoday.afrikaburn.R;
 import net.maiatoday.afrikaburn.databinding.ActivityMainBinding;
-import net.maiatoday.afrikaburn.service.DataFetchService;
+import net.maiatoday.afrikaburn.model.Entry;
+import net.maiatoday.afrikaburn.model.Home;
 
-public class MainActivity extends BaseActivity {
+import io.realm.RealmResults;
 
-    private TextView mTextMessage;
+public class MainActivity extends BaseActivity implements OnEntryClickListener {
+
+    Home home;
+    RecyclerView recyclerView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -47,26 +55,40 @@ public class MainActivity extends BaseActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_theme_camps:
-                    mTextMessage.setText(R.string.title_theme);
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realm.where(Entry.class).equalTo(Entry.WHAT, Entry.THEME_CAMP).findAll()));
                     return true;
                 case R.id.navigation_artworks:
-                    mTextMessage.setText(R.string.title_theme);
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realm.where(Entry.class).equalTo(Entry.WHAT, Entry.ART_WORK).findAll()));
                     return true;
                 case R.id.navigation_infrastructure:
-                    mTextMessage.setText(R.string.title_infrastructure);
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realm.where(Entry.class).equalTo(Entry.WHAT, Entry.CLAN).findAll()));
                     return true;
 //                case R.id.navigation_performance:
 //                    mTextMessage.setText(R.string.title_performance);
 //                    return true;
                 case R.id.navigation_burn:
-                    mTextMessage.setText(R.string.title_burns);
+
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realm.where(Entry.class).equalTo(Entry.WHAT, Entry.BURN).findAll()));
                     return true;
-                case R.id.navigation_mutant_vehicles:
-                    mTextMessage.setText(R.string.title_mutant_vehicles);
-                    return true;
-//                case R.id.navigation_favourites:
-//                    mTextMessage.setText(R.string.title_mutant_vehicles);
+//                case R.id.navigation_mutant_vehicles:
+//
+//                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+//                            MainActivity.this,
+//                            realm.where(Entry.class).equalTo(Entry.WHAT, Entry.MUTANT_VEHICLE).findAll()));
 //                    return true;
+                case R.id.navigation_favourites:
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realm.where(Entry.class).equalTo(Entry.FAVOURITE, true).findAll()));
+                    return true;
             }
             return false;
         }
@@ -76,12 +98,59 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
-        mTextMessage = binding.message;
+        RealmResults<Home> res = realm.where(Home.class).findAll();
+        if (!res.isEmpty()) {
+            home = res.get(0);
+        }
+        binding.setHome(home);
+        recyclerView = binding.list;
+        setupRecyclerView();
+        //  mTextMessage = binding.message;
         BottomNavigationView navigation = binding.navigation;
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+    private void setupRecyclerView() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new EntryRecyclerAdapter(this, this, realm.where(Entry.class).findAll()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_main:
+                recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                        MainActivity.this,
+                        realm.where(Entry.class).findAll()));
+                return true;
+            case R.id.action_map:
+                startActivity(MapsActivity.makeIntent(this, ""));
+                return true;
+            case R.id.action_search:
+//TODO do search stuff
+                Toast.makeText(this, "Implement search", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_about:
+                startActivity(new Intent(this, AboutActivity.class));
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void openItem(Entry data) {
+        startActivity(DetailActivity.makeIntent(this, data.id));
+    }
 }

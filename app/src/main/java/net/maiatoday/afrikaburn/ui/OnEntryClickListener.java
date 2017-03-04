@@ -24,48 +24,12 @@
 
 package net.maiatoday.afrikaburn.ui;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
+import net.maiatoday.afrikaburn.model.Entry;
 
-import net.maiatoday.afrikaburn.BuildConfig;
-import net.maiatoday.afrikaburn.R;
+/**
+ * Created by maia on 2017/03/04.
+ */
 
-import io.realm.Realm;
-
-public class DetailActivity extends BaseActivity {
-
-    private static final String KEY_ID = BuildConfig.APPLICATION_ID +"."+ DetailActivity.class.getSimpleName()+".key_id";
-
-    String id;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
-        getIntentInfo();
-    }
-
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    public static Intent makeIntent(Context context, String id) {
-        Intent i = new Intent(context, DetailActivity.class);
-        i.putExtra(KEY_ID, id);
-        return i;
-    }
-    private void getIntentInfo() {
-        Intent i = getIntent();
-        if (i.hasExtra(KEY_ID)) {
-            id = i.getStringExtra(KEY_ID);
-        } else {
-            id = "";
-        }
-    }
+public interface OnEntryClickListener {
+    public void openItem(Entry data);
 }
