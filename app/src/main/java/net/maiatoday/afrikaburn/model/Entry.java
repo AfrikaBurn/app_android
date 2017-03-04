@@ -24,7 +24,9 @@
 
 package net.maiatoday.afrikaburn.model;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
+import android.support.annotation.StringRes;
 
 import net.maiatoday.afrikaburn.R;
 
@@ -71,10 +73,16 @@ public class Entry implements RealmModel {
         return "Thursday 20 to 7";
     }
 
+    public int whatDrawableId() {
+        return whatToDrawableId(what);
+    }
+
 
     public static final String WHAT = "what";
     public static final String FAVOURITE = "favourite";
+    public static final String ID = "id";
 
+    @DrawableRes
     public static int whatToDrawableId(int what) {
         switch (what) {
             case THEME_CAMP:
@@ -91,6 +99,26 @@ public class Entry implements RealmModel {
                 return R.drawable.ic_infrastructure;
             default:
                 return R.drawable.ic_theme;
+        }
+    }
+
+    @StringRes
+    public int getWhatString() {
+        switch (what) {
+            case THEME_CAMP:
+                return R.string.title_one_theme;
+            case ART_WORK:
+                return R.string.title_one_artworks;
+            case BURN:
+                return R.string.title_one_burns;
+            case PERFORMANCE:
+                return R.string.title_one_performance;
+            case MUTANT_VEHICLE:
+                return R.string.title_one_mutant_vehicles;
+            case CLAN:
+                return R.string.title_one_infrastructure;
+            default:
+                return R.string.title_one_theme;
         }
     }
 

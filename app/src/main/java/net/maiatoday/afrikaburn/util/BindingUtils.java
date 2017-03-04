@@ -22,33 +22,39 @@
  * SOFTWARE.
  */
 
-package net.maiatoday.afrikaburn.ui;
+package net.maiatoday.afrikaburn.util;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
+import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.widget.ImageView;
 
-import io.realm.Realm;
+/**
+ * Created by maia on 2017/03/04.
+ */
 
-public class BaseActivity extends AppCompatActivity {
-
-    //This is needed for vector drawables in a inset/layout when you use it in drawableLeft in a textview
-    static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+public class BindingUtils {
+    @BindingAdapter("imageSrc")
+    public static void setImageUri(ImageView view, String imageUri) {
+        if (imageUri == null) {
+            view.setImageURI(null);
+        } else {
+            view.setImageURI(Uri.parse(imageUri));
+        }
     }
 
-    // realm instance for UI actions (could have been in the application?
-    protected Realm realmForUi;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        realmForUi = Realm.getDefaultInstance();
+    @BindingAdapter("imageSrc")
+    public static void setImageUri(ImageView view, Uri imageUri) {
+        view.setImageURI(imageUri);
     }
 
-    @Override
-    protected void onDestroy() {
-        realmForUi.close();
-        super.onDestroy();
+    @BindingAdapter("imageSrc")
+    public static void setImageDrawable(ImageView view, Drawable drawable) {
+        view.setImageDrawable(drawable);
+    }
+
+    @BindingAdapter("imageSrc")
+    public static void setImageResource(ImageView imageView, int resource){
+        imageView.setImageResource(resource);
     }
 }

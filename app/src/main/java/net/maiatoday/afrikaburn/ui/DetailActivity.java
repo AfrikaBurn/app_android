@@ -26,33 +26,72 @@ package net.maiatoday.afrikaburn.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import net.maiatoday.afrikaburn.BuildConfig;
 import net.maiatoday.afrikaburn.R;
+import net.maiatoday.afrikaburn.databinding.ActivityDetailBinding;
+import net.maiatoday.afrikaburn.model.Entry;
+import net.maiatoday.afrikaburn.ui.adapters.OnDetailEntryClickListener;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmObject;
+import io.realm.RealmResults;
 
-public class DetailActivity extends BaseActivity {
+public class DetailActivity extends BaseActivity implements OnDetailEntryClickListener {
 
     private static final String KEY_ID = BuildConfig.APPLICATION_ID +"."+ DetailActivity.class.getSimpleName()+".key_id";
 
-    String id;
+    String entryId;
+    private ActivityDetailBinding binding;
+    private Entry entry;
+    RealmResults<Entry> results;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
         getIntentInfo();
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
+        results = realmForUi.where(Entry.class).equalTo(Entry.ID, entryId).findAll();
+        if (results.isEmpty()) {
+            Toast.makeText(this, "Woops, can't find the Entry.", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            entry = realmForUi.where(Entry.class).equalTo(Entry.ID, entryId).findFirst();
+        }
+        binding.setData(entry);
+        binding.setHandler(this);
+        RealmObject.addChangeListener(entry, entryListener);
+        getSupportActionBar().setTitle(getString(entry.getWhatString()));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.detail, menu);
+        return true;
+    }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_map:
+                startActivity(MapsActivity.makeIntent(this, entryId));
+                finish();
+                return true;
+            case R.id.action_about:
+                startActivity(new Intent(this, AboutActivity.class));
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public static Intent makeIntent(Context context, String id) {
@@ -63,9 +102,34 @@ public class DetailActivity extends BaseActivity {
     private void getIntentInfo() {
         Intent i = getIntent();
         if (i.hasExtra(KEY_ID)) {
-            id = i.getStringExtra(KEY_ID);
+            entryId = i.getStringExtra(KEY_ID);
         } else {
-            id = "";
+            finish(); // can't show an empty item
         }
     }
+
+    @Override
+    public void toggleFavourite(Entry data) {
+        realmForUi.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Entry e = realm.where(Entry.class).equalTo(Entry.ID, entryId).findFirst();
+                e.favourite = !e.favourite;
+            }
+        });
+    }
+
+    private RealmChangeListener<Entry> entryListener = new RealmChangeListener<Entry>() {
+        @Override
+        public void onChange(Entry entry) {
+            //We could do this with two way data binding...
+            if (!RealmObject.isValid(entry)) {
+                Toast.makeText(DetailActivity.this, "Entry deleted.", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                binding.setData(entry);
+            }
+        }
+    };
+
 }

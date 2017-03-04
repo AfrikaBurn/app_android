@@ -6,8 +6,8 @@ buildscript {
         buildTools = '25.0.2'
         supportLibraryVersion = '25.2.0'
 
-        realmVersion = '2.3.0'
-        realmAdapterVersion = '1.4.0'
+        realmVersion = '3.0.0'
+        realmAdapterVersion = '2.0.0'
 
         playServicesVersion = '10.2.0'
     }

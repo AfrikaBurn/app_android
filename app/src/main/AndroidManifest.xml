@@ -56,7 +56,13 @@
         </activity>
         <activity
             android:name=".ui.DetailActivity"
-            android:label="@string/title_activity_detail">
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".ui.MainActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity"/>
         </activity>
         <!--
                  The API key for Google Maps-based APIs is defined as a string resource.

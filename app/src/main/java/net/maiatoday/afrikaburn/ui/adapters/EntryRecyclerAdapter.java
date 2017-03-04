@@ -25,14 +25,15 @@
 package net.maiatoday.afrikaburn.ui.adapters;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import net.maiatoday.afrikaburn.BR;
 import net.maiatoday.afrikaburn.R;
+import net.maiatoday.afrikaburn.databinding.RowItemEntryBinding;
 import net.maiatoday.afrikaburn.model.Entry;
 
 import io.realm.OrderedRealmCollection;
@@ -43,51 +44,42 @@ import io.realm.RealmRecyclerViewAdapter;
  * Created by maia on 2017/03/04.
  */
 
-public class EntryRecyclerAdapter extends RealmRecyclerViewAdapter<Entry, EntryRecyclerAdapter.MyViewHolder> {
+public class EntryRecyclerAdapter extends RealmRecyclerViewAdapter<Entry, EntryRecyclerAdapter.BindingViewHolder> {
 
     private final OnEntryClickListener listener;
 
     public EntryRecyclerAdapter(Context context, OnEntryClickListener activity, OrderedRealmCollection<Entry> data) {
-        super(context, data, true);
+        super(data, true);
         this.listener = activity;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row_item_entry, parent, false);
-        return new MyViewHolder(itemView);
+    public BindingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        RowItemEntryBinding itembinding = DataBindingUtil.inflate(
+                layoutInflater, R.layout.row_item_entry, parent, false);
+        return new BindingViewHolder(itembinding);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(BindingViewHolder holder, int position) {
         Entry obj = getData().get(position);
-        holder.data = obj;
-        holder.title.setText(obj.title);
-        holder.blurb.setText(obj.blurb);
-        holder.what.setImageResource(Entry.whatToDrawableId(obj.what));
-        holder.favourite.setImageResource(obj.favourite?R.drawable.ic_favorite_hot:R.drawable.ic_favorite_border_hot);
+        holder.bind(obj, listener);
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView title;
-        public TextView blurb;
-        public ImageView favourite;
-        public ImageView what;
-        public Entry data;
+    class BindingViewHolder extends RecyclerView.ViewHolder {
+        
+        private ViewDataBinding binding;
 
-        public MyViewHolder(View view) {
-            super(view);
-            title = (TextView) view.findViewById(R.id.textTitle);
-            blurb = (TextView) view.findViewById(R.id.textBlurb);
-            favourite = (ImageView) view.findViewById(R.id.imageFav);
-            what = (ImageView) view.findViewById(R.id.imageWhat);
-            view.setOnClickListener(this);
+        public BindingViewHolder(ViewDataBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
-        @Override
-        public void onClick(View view) {
-            listener.openItem(data);
+        public void bind(Entry data, OnEntryClickListener listener) {
+            binding.setVariable(BR.data, data);
+            binding.setVariable(BR.handler, listener);
+            binding.executePendingBindings();
         }
     }
 
