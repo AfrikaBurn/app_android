@@ -22,20 +22,26 @@
  * SOFTWARE.
  */
 
-package net.maiatday.afrikaburn;
+package net.maiatoday.afrikaburn.ui;
 
-import org.junit.Test;
+import android.os.Bundle;
+import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 
-import static org.junit.Assert.*;
+import net.maiatoday.afrikaburn.R;
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+import io.realm.Realm;
+
+public class DetailActivity extends BaseActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -22,29 +22,35 @@
  * SOFTWARE.
  */
 
-package net.maiatday.afrikaburn;
+package net.maiatoday.afrikaburn.ui;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.maiatoday.afrikaburn.R;
 
-import static org.junit.Assert.*;
+import io.realm.Realm;
 
-/**
- * Instrumentation test, which will execute on an Android device.
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-@RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
-    @Test
-    public void useAppContext() throws Exception {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
+public class BaseActivity extends AppCompatActivity {
 
-        assertEquals("net.maiatday.afrikaburn", appContext.getPackageName());
+    //This is needed for vector drawables in a inset/layout when you use it in drawableLeft in a textview
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
+    // realm instance for UI actions (could have been in the application?
+    protected Realm realm;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        realm = Realm.getDefaultInstance();
+    }
+
+    @Override
+    protected void onDestroy() {
+        realm.close();
+        super.onDestroy();
     }
 }

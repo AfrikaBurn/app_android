@@ -8,12 +8,14 @@ buildscript {
 
         realmVersion = '2.3.0'
         realmAdapterVersion = '1.4.0'
+
+        playServicesVersion = '10.2.0'
     }
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0-rc1'
+        classpath 'com.android.tools.build:gradle:2.3.0'
         classpath "io.realm:realm-gradle-plugin:${realmVersion}"
 
         // NOTE: Do not place your application dependencies here; they belong

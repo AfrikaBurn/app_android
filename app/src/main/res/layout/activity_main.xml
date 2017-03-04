@@ -28,7 +28,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -61,5 +61,5 @@
             android:background="?android:attr/windowBackground"
             app:menu="@menu/navigation"/>
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 </layout>

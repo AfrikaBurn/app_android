@@ -23,14 +23,28 @@
   -->
 
 <resources>
-    <string name="app_name">AfrikaBurn</string>
-    <string name="title_theme">Camps</string>
-    <string name="title_infrastructure">Infrastructure</string>
-    <string name="title_burns">Burns</string>
-    <string name="title_performance">Performances</string>
-    <string name="title_mutant_vehicles">Mutant Vehicles</string>
-    <string name="title_favorite">Favourites</string>
-    <string name="title_artworks">Artworks</string>
-    <string name="title_activity_detail">DetailActivity</string>
-    <string name="title_activity_maps">Map</string>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=9B:A0:53:6A:8B:F8:1C:38:F3:1E:88:D0:24:5A:13:12:15:35:C8:3F%3Bnet.maiatoday.afrikaburn.ui
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    9B:A0:53:6A:8B:F8:1C:38:F3:1E:88:D0:24:5A:13:12:15:35:C8:3F
+
+    SHA-1 certificate fingerprint:
+    9B:A0:53:6A:8B:F8:1C:38:F3:1E:88:D0:24:5A:13:12:15:35:C8:3F
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyBkaA5WfFLR06JdMUi0MM6RXRTGh_MJYXA
+    </string>
 </resources>

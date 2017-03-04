@@ -34,8 +34,9 @@ import android.widget.TextView;
 
 import net.maiatoday.afrikaburn.R;
 import net.maiatoday.afrikaburn.databinding.ActivityMainBinding;
+import net.maiatoday.afrikaburn.service.DataFetchService;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private TextView mTextMessage;
 
