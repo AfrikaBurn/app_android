@@ -59,14 +59,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/navigation"
+
+        <com.roughike.bottombar.BottomBar
+            android:id="@+id/bottomBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_gravity="bottom"
-            android:background="?android:attr/windowBackground"
-            app:itemTextColor="@color/colour_burn_bright_pink"
-            app:menu="@menu/navigation"/>
+            android:layout_alignParentBottom="true"
+            app:bb_tabXmlResource="@xml/bottombar_tabs"
+            app:bb_behavior="shy"
+            app:bb_inActiveTabColor="@color/colour_ash"
+            app:bb_activeTabColor="@color/colour_sun_cream"/>
 
 
     </android.support.design.widget.CoordinatorLayout>

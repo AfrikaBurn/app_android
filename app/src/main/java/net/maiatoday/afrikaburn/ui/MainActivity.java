@@ -27,8 +27,7 @@ package net.maiatoday.afrikaburn.ui;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
+import android.support.annotation.IdRes;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,10 +35,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
+
 import net.maiatoday.afrikaburn.R;
 import net.maiatoday.afrikaburn.databinding.ActivityMainBinding;
 import net.maiatoday.afrikaburn.model.Entry;
 import net.maiatoday.afrikaburn.model.Home;
+import net.maiatoday.afrikaburn.ui.adapters.EntryRecyclerAdapter;
+import net.maiatoday.afrikaburn.ui.adapters.OnEntryClickListener;
 
 import io.realm.RealmResults;
 
@@ -48,49 +52,61 @@ public class MainActivity extends BaseActivity implements OnEntryClickListener {
     Home home;
     RecyclerView recyclerView;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private OnTabSelectListener mOnTabSelectListener
+            = new OnTabSelectListener() {
 
         @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
+        public void onTabSelected(@IdRes int tabId) {
+            switch (tabId) {
+                case R.id.navigation_main:
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realm.where(Entry.class).findAll()));
+                    getSupportActionBar().setTitle(getString(R.string.title_main));
+                    break;
                 case R.id.navigation_theme_camps:
                     recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
                             MainActivity.this,
                             realm.where(Entry.class).equalTo(Entry.WHAT, Entry.THEME_CAMP).findAll()));
-                    return true;
+                    getSupportActionBar().setTitle(getString(R.string.title_theme));
+                    break;
                 case R.id.navigation_artworks:
                     recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
                             MainActivity.this,
                             realm.where(Entry.class).equalTo(Entry.WHAT, Entry.ART_WORK).findAll()));
-                    return true;
+                    getSupportActionBar().setTitle(getString(R.string.title_artworks));
+                    break;
                 case R.id.navigation_infrastructure:
                     recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
                             MainActivity.this,
                             realm.where(Entry.class).equalTo(Entry.WHAT, Entry.CLAN).findAll()));
-                    return true;
-//                case R.id.navigation_performance:
-//                    mTextMessage.setText(R.string.title_performance);
-//                    return true;
+                    getSupportActionBar().setTitle(getString(R.string.title_infrastructure));
+                    break;
+                case R.id.navigation_performance:
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realm.where(Entry.class).equalTo(Entry.WHAT, Entry.PERFORMANCE).findAll()));
+                    getSupportActionBar().setTitle(getString(R.string.title_performance));
+                    break;
                 case R.id.navigation_burn:
-
                     recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
                             MainActivity.this,
                             realm.where(Entry.class).equalTo(Entry.WHAT, Entry.BURN).findAll()));
-                    return true;
-//                case R.id.navigation_mutant_vehicles:
-//
-//                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
-//                            MainActivity.this,
-//                            realm.where(Entry.class).equalTo(Entry.WHAT, Entry.MUTANT_VEHICLE).findAll()));
-//                    return true;
+                    getSupportActionBar().setTitle(getString(R.string.title_burns));
+                    break;
+                case R.id.navigation_mutant_vehicles:
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realm.where(Entry.class).equalTo(Entry.WHAT, Entry.MUTANT_VEHICLE).findAll()));
+                    getSupportActionBar().setTitle(getString(R.string.title_mutant_vehicles));
+                    break;
                 case R.id.navigation_favourites:
                     recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
                             MainActivity.this,
                             realm.where(Entry.class).equalTo(Entry.FAVOURITE, true).findAll()));
-                    return true;
+                    getSupportActionBar().setTitle(getString(R.string.title_favorite));
+                    break;
             }
-            return false;
         }
 
     };
@@ -106,9 +122,9 @@ public class MainActivity extends BaseActivity implements OnEntryClickListener {
         binding.setHome(home);
         recyclerView = binding.list;
         setupRecyclerView();
-        //  mTextMessage = binding.message;
-        BottomNavigationView navigation = binding.navigation;
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        BottomBar bottomBar = binding.bottomBar;
+        bottomBar.setOnTabSelectListener(mOnTabSelectListener);
     }
 
     private void setupRecyclerView() {
@@ -129,11 +145,6 @@ public class MainActivity extends BaseActivity implements OnEntryClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_main:
-                recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
-                        MainActivity.this,
-                        realm.where(Entry.class).findAll()));
-                return true;
             case R.id.action_map:
                 startActivity(MapsActivity.makeIntent(this, ""));
                 return true;

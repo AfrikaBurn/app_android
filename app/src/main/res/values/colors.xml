@@ -30,9 +30,27 @@
 
     <color name="colour_burnback_dark">#ff110d0d</color>
     <color name="colour_burnback_mid">#ff390c13</color>
-    <color name="colour_burn_bright_red">#ffC7112F</color>
-    <color name="colour_burn_bright_yellow">#ffFFF800</color>
-    <color name="colour_burn_bright_orange">#ffF18F07</color>
-    <color name="colour_burn_bright_pink">#ffF36C56</color>
+    <color name="colour_fire_engine">#ffC7112F</color>
+    <color name="colour_construction_yellow">#ffFFF800</color>
+    <color name="colour_oros">#ffF18F07</color>
+    <color name="colour_pawpaw">#ffF36C56</color>
+    <color name="colour_bubblegum">#fff356c7</color>
+    <color name="colour_portapool">#569df3</color>
+    <color name="colour_pistachio">#56f3a7</color>
+    <color name="colour_bishop_lilac">#8d56f3</color>
+    <color name="colour_sun_cream">#f2dfbf</color>
+    <color name="colour_ash">#636363</color>
     <color name="colour_splash">#ffF36C56</color>
+
+
+    <color name="colour_all">#6c1d29</color>
+    <color name="colour_burn">#ffC7112F</color>
+    <color name="colour_performance">#ffFFF800</color>
+    <color name="colour_clan">#ffF18F07</color>
+    <color name="colour_favourite">#f356c7</color>
+    <color name="colour_artwork">#569df3</color>
+    <color name="colour_mutant_vehicle">#56f3a7</color>
+    <color name="colour_camp">#8d56f3</color>
+
+
 </resources>
