@@ -68,9 +68,23 @@ public class Entry implements RealmModel {
     /// Favourite - only stored locally
     public boolean favourite;
 
-    String getStartText() {
+    public String getStartText() {
         //TODO format the start time if it exists
         return "Thursday 20 to 7";
+    }
+
+    public String latitudeText() {
+        if (latitude != null) {
+            return String.valueOf(latitude);
+        }
+        return "";
+    }
+
+    public String longitudeText() {
+        if (longitude != null) {
+            return String.valueOf(longitude);
+        }
+        return "";
     }
 
     public int whatDrawableId() {
@@ -161,13 +175,15 @@ public class Entry implements RealmModel {
     }
 
     @Retention(SOURCE)
-    @IntDef({THEME_CAMP,
+    @IntDef({ALL,
+            THEME_CAMP,
             ART_WORK,
             BURN,
             PERFORMANCE,
             MUTANT_VEHICLE,
             CLAN})
     public @interface What {}
+    public static final int ALL = -1;
     public static final int THEME_CAMP = 0;
     public static final int ART_WORK = 1;
     public static final int BURN = 2;

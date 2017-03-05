@@ -86,9 +86,11 @@ public class DetailActivity extends BaseActivity implements OnDetailEntryClickLi
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             case R.id.action_map:
-                startActivity(MapsActivity.makeIntent(this, entryId));
-                finish();
+                startActivity(MapsActivity.makeIntent(this, entryId, Entry.ALL, false));
                 return true;
             case R.id.action_about:
                 startActivity(new Intent(this, AboutActivity.class));

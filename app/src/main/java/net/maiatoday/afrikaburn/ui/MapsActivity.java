@@ -26,7 +26,6 @@ package net.maiatoday.afrikaburn.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,27 +39,31 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import net.maiatoday.afrikaburn.BuildConfig;
 import net.maiatoday.afrikaburn.R;
+import net.maiatoday.afrikaburn.model.Entry;
 
-import io.realm.Realm;
-
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-    private static final String KEY_ID = BuildConfig.APPLICATION_ID +"."+ MapsActivity.class.getSimpleName()+".key_id";
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
+    private static final String KEY_ID = BuildConfig.APPLICATION_ID + "." + MapsActivity.class.getSimpleName() + ".key_id";
+    private static final String KEY_WHAT = BuildConfig.APPLICATION_ID + "." + MapsActivity.class.getSimpleName() + ".key_what";
+    private static final String KEY_FAVOURITES = BuildConfig.APPLICATION_ID + "." + MapsActivity.class.getSimpleName() + ".key_favourites";
 
     private GoogleMap mMap;
-    // realm instance for UI actions (could have been in the application?
-    protected Realm realm;
-    private String id;
+    // parameters that determine which points to show and what to query initially, the query can change with search
+    private String entryId;
+
+    @Entry.What
+    private int what;
+    private boolean showFavourites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         getIntentInfo();
-        realm = Realm.getDefaultInstance();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -74,6 +77,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             case R.id.action_main:
                 finish();
                 return true;
@@ -108,23 +114,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
-    @Override
-    protected void onDestroy() {
-        realm.close();
-        super.onDestroy();
-    }
 
-    public static Intent makeIntent(Context context, String id) {
+    public static Intent makeIntent(Context context, String entryId,
+                                    @Entry.What int what, boolean favourites) {
         Intent i = new Intent(context, MapsActivity.class);
-        i.putExtra(KEY_ID, id);
+        i.putExtra(KEY_ID, entryId);
+        i.putExtra(KEY_WHAT, what);
+        i.putExtra(KEY_FAVOURITES, favourites);
         return i;
     }
+
     private void getIntentInfo() {
         Intent i = getIntent();
         if (i.hasExtra(KEY_ID)) {
-            id = i.getStringExtra(KEY_ID);
+            entryId = i.getStringExtra(KEY_ID);
         } else {
-            id = "";
+            entryId = "";
         }
+        //noinspection ResourceType
+        what = i.getIntExtra(KEY_WHAT, Entry.ALL);
+        showFavourites = i.getBooleanExtra(KEY_FAVOURITES, false);
     }
 }

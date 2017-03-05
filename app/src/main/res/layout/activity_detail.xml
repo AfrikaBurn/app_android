@@ -37,7 +37,6 @@
             type="net.maiatoday.afrikaburn.ui.adapters.OnDetailEntryClickListener"/>
 
         <import type="android.view.View"/>
-        <import type="java.lang.String"/>
     </data>
 
     <ScrollView
@@ -100,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@{String.valueOf(data.latitude)}"
+                android:text="@{data.latitudeText()}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detailCategory"
                 tools:text="-33.1231"/>
@@ -110,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@{String.valueOf(data.longitude)}"
+                android:text="@{data.longitudeText()}"
                 app:layout_constraintLeft_toRightOf="@+id/detailLat"
                 app:layout_constraintTop_toBottomOf="@+id/detailCategory"
                 tools:text="19.000"/>
