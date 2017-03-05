@@ -27,7 +27,9 @@ package net.maiatoday.afrikaburn.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -69,6 +71,8 @@ public class DetailActivity extends BaseActivity implements OnDetailEntryClickLi
         RealmObject.addChangeListener(entry, entryListener);
         getSupportActionBar().setTitle(getString(entry.getWhatString()));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        int colorId = Entry.whatColorId(entry.what);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, colorId)));
     }
 
     @Override

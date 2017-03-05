@@ -122,6 +122,44 @@ public class Entry implements RealmModel {
         }
     }
 
+    public static int getDarkColorId(int what) {
+        switch (what) {
+            case THEME_CAMP:
+                return R.color.colour_dark_camp;
+            case ART_WORK:
+                return R.color.colour_dark_artwork;
+            case BURN:
+                return R.color.colour_dark_burn;
+            case PERFORMANCE:
+                return R.color.colour_dark_performance;
+            case MUTANT_VEHICLE:
+                return R.color.colour_dark_mutant_vehicle;
+            case CLAN:
+                return R.color.colour_dark_clan;
+            default:
+                return R.color.colour_burnback_dark;
+        }
+    }
+
+    public static int whatColorId(int what) {
+        switch (what) {
+            case THEME_CAMP:
+                return R.color.colour_camp;
+            case ART_WORK:
+                return R.color.colour_artwork;
+            case BURN:
+                return R.color.colour_burn;
+            case PERFORMANCE:
+                return R.color.colour_performance;
+            case MUTANT_VEHICLE:
+                return R.color.colour_mutant_vehicle;
+            case CLAN:
+                return R.color.colour_clan;
+            default:
+                return R.color.colorPrimary;
+        }
+    }
+
     @Retention(SOURCE)
     @IntDef({THEME_CAMP,
             ART_WORK,

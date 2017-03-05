@@ -26,35 +26,33 @@ package net.maiatoday.afrikaburn.util;
 
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
+import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import net.maiatoday.afrikaburn.model.Entry;
 
 /**
  * Created by maia on 2017/03/04.
  */
 
 public class BindingUtils {
-    @BindingAdapter("imageSrc")
-    public static void setImageUri(ImageView view, String imageUri) {
-        if (imageUri == null) {
-            view.setImageURI(null);
-        } else {
-            view.setImageURI(Uri.parse(imageUri));
-        }
-    }
-
-    @BindingAdapter("imageSrc")
-    public static void setImageUri(ImageView view, Uri imageUri) {
-        view.setImageURI(imageUri);
-    }
 
     @BindingAdapter("imageSrc")
     public static void setImageDrawable(ImageView view, Drawable drawable) {
         view.setImageDrawable(drawable);
     }
 
-    @BindingAdapter("imageSrc")
-    public static void setImageResource(ImageView imageView, int resource){
-        imageView.setImageResource(resource);
+    @BindingAdapter("whatBackground")
+    public static void setViewBackground(View view, int what){
+        int colorId = Entry.getDarkColorId(what);
+        view.setBackgroundColor(ContextCompat.getColor(view.getContext(), colorId));
+    }
+
+    @BindingAdapter("whatTextColor")
+    public static void setViewBackground(TextView view, int what){
+        int colorId = Entry.whatColorId(what);
+        view.setTextColor(ContextCompat.getColor(view.getContext(), colorId));
     }
 }

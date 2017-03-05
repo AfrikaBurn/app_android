@@ -30,27 +30,35 @@
 
     <color name="colour_burnback_dark">#ff110d0d</color>
     <color name="colour_burnback_mid">#ff390c13</color>
-    <color name="colour_fire_engine">#ffC7112F</color>
-    <color name="colour_construction_yellow">#ffFFF800</color>
-    <color name="colour_oros">#ffF18F07</color>
+    <color name="colour_fire_engine">#b71c1c</color>
+    <color name="colour_construction_yellow">#ffd500</color>
+    <color name="colour_oros">#fb8c00</color>
     <color name="colour_pawpaw">#ffF36C56</color>
-    <color name="colour_bubblegum">#fff356c7</color>
-    <color name="colour_portapool">#569df3</color>
-    <color name="colour_pistachio">#56f3a7</color>
-    <color name="colour_bishop_lilac">#8d56f3</color>
-    <color name="colour_sun_cream">#f2dfbf</color>
-    <color name="colour_ash">#636363</color>
-    <color name="colour_splash">#ffF36C56</color>
+    <color name="colour_bubblegum">#f06292</color>
+    <color name="colour_portapool">#42a5f5</color>
+    <color name="colour_pistachio">#69f0ae</color>
+    <color name="colour_bishop_lilac">#7c4dff</color>
+    <color name="colour_sun_cream">#ffe0b2</color>
+    <color name="colour_ash">#616161</color>
+    <color name="colour_splash">#ff7043</color>
 
 
-    <color name="colour_all">#6c1d29</color>
-    <color name="colour_burn">#ffC7112F</color>
-    <color name="colour_performance">#ffFFF800</color>
-    <color name="colour_clan">#ffF18F07</color>
-    <color name="colour_favourite">#f356c7</color>
-    <color name="colour_artwork">#569df3</color>
-    <color name="colour_mutant_vehicle">#56f3a7</color>
-    <color name="colour_camp">#8d56f3</color>
+    <color name="colour_all">#ff390c13</color>
+    <color name="colour_burn">#b71c1c</color>
+    <color name="colour_performance">#ffd500</color>
+    <color name="colour_clan">#fb8c00</color>
+    <color name="colour_favourite">#f06292</color>
+    <color name="colour_artwork">#42a5f5</color>
+    <color name="colour_mutant_vehicle">#69f0ae</color>
+    <color name="colour_camp">#7c4dff</color>
+
+    <color name="colour_dark_burn">#3d2622</color>
+    <color name="colour_dark_performance">#403a00</color>
+    <color name="colour_dark_clan">#402300</color>
+    <color name="colour_dark_favourite">#401a27</color>
+    <color name="colour_dark_artwork">#112b40</color>
+    <color name="colour_dark_mutant_vehicle">#1c402e</color>
+    <color name="colour_dark_camp">#1f1340</color>
 
 
 </resources>
