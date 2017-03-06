@@ -1,0 +1,50 @@
+<!--
+  ~ MIT License
+  ~
+  ~ Copyright (c) 2017 Maia Grotepass
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<resources>
+    <string name="app_name">AfrikaBurn</string>
+    <string name="title_theme">Camps</string>
+    <string name="title_infrastructure">Infrastructure</string>
+    <string name="title_burns">Burns</string>
+    <string name="title_performance">Performances</string>
+    <string name="title_mutant_vehicles">Mutant Vehicles</string>
+    <string name="title_favorite">Favourites</string>
+    <string name="title_artworks">Artworks</string>
+    <string name="title_one_theme">Camp</string>
+    <string name="title_one_infrastructure">Clan</string>
+    <string name="title_one_burns">Burn</string>
+    <string name="title_one_performance">Performance</string>
+    <string name="title_one_mutant_vehicles">Mutant Vehicle</string>
+    <string name="title_one_artworks">Artwork</string>
+    <string name="title_activity_detail">Detail</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="action_about">About</string>
+    <string name="action_search">Search</string>
+    <string name="action_place">Map</string>
+    <string name="action_main">Main</string>
+    <string name="favourite">favourite</string>
+    <string name="category">Category</string>
+    <string name="title_main">Afrika Burn</string>
+    <string name="action_refresh">Refresh</string>
+</resources>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ MIT License
+  ~
+  ~ Copyright (c) 2017 Maia Grotepass
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<resources>
+    <color name="colorPrimary">#ff390c13</color>
+    <color name="colorPrimaryDark">#ff150205</color>
+    <color name="colorAccent">#ffF36C56</color>
+
+    <color name="colour_burnback_dark">#ff110d0d</color>
+    <color name="colour_burnback_mid">#ff390c13</color>
+    <color name="colour_fire_engine">#b71c1c</color>
+    <color name="colour_construction_yellow">#ffd500</color>
+    <color name="colour_oros">#fb8c00</color>
+    <color name="colour_pawpaw">#ffF36C56</color>
+    <color name="colour_bubblegum">#f06292</color>
+    <color name="colour_portapool">#42a5f5</color>
+    <color name="colour_pistachio">#69f0ae</color>
+    <color name="colour_bishop_lilac">#7c4dff</color>
+    <color name="colour_sun_cream">#ffe0b2</color>
+    <color name="colour_ash">#616161</color>
+    <color name="colour_splash">#ff7043</color>
+
+
+    <color name="colour_all">#ff390c13</color>
+    <color name="colour_burn">#b71c1c</color>
+    <color name="colour_performance">#ffd500</color>
+    <color name="colour_clan">#fb8c00</color>
+    <color name="colour_favourite">#f06292</color>
+    <color name="colour_artwork">#42a5f5</color>
+    <color name="colour_mutant_vehicle">#69f0ae</color>
+    <color name="colour_camp">#7c4dff</color>
+
+    <color name="colour_dark_burn">#3d2622</color>
+    <color name="colour_dark_performance">#403a00</color>
+    <color name="colour_dark_clan">#402300</color>
+    <color name="colour_dark_favourite">#401a27</color>
+    <color name="colour_dark_artwork">#112b40</color>
+    <color name="colour_dark_mutant_vehicle">#1c402e</color>
+    <color name="colour_dark_camp">#1f1340</color>
+
+
+</resources>
