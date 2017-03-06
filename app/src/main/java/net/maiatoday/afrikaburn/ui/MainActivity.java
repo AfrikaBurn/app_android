@@ -41,6 +41,7 @@ import com.roughike.bottombar.OnTabSelectListener;
 import net.maiatoday.afrikaburn.R;
 import net.maiatoday.afrikaburn.databinding.ActivityMainBinding;
 import net.maiatoday.afrikaburn.model.Entry;
+import net.maiatoday.afrikaburn.model.EntryFields;
 import net.maiatoday.afrikaburn.model.Home;
 import net.maiatoday.afrikaburn.service.DataFetchService;
 import net.maiatoday.afrikaburn.ui.adapters.EntryRecyclerAdapter;
@@ -59,6 +60,86 @@ public class MainActivity extends BaseActivity implements OnEntryClickListener {
     private boolean showFavourites = false;
 
     private ActivityMainBinding binding;
+    private OnTabSelectListener mOnTabSelectListener
+            = new OnTabSelectListener() {
+
+        @Override
+        public void onTabSelected(@IdRes int tabId) {
+            switch (tabId) {
+                case R.id.navigation_main:
+                    showFavourites = false;
+                    what = Entry.ALL;
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realmForUi.where(Entry.class).findAll()));
+                    getSupportActionBar().setTitle(getString(R.string.title_main));
+                    break;
+                case R.id.navigation_theme_camps:
+                    showFavourites = false;
+                    what = Entry.THEME_CAMP;
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realmForUi.where(Entry.class).equalTo(EntryFields.WHAT, what).findAll()));
+                    getSupportActionBar().setTitle(getString(R.string.title_theme));
+                    break;
+                case R.id.navigation_artworks:
+                    showFavourites = false;
+                    what = Entry.ART_WORK;
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realmForUi.where(Entry.class).equalTo(EntryFields.WHAT, what).findAll()));
+                    getSupportActionBar().setTitle(getString(R.string.title_artworks));
+                    break;
+                case R.id.navigation_infrastructure:
+                    showFavourites = false;
+                    what = Entry.CLAN;
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realmForUi.where(Entry.class).equalTo(EntryFields.WHAT, what).findAll()));
+                    getSupportActionBar().setTitle(getString(R.string.title_infrastructure));
+                    break;
+                case R.id.navigation_performance:
+                    showFavourites = false;
+                    what = Entry.PERFORMANCE;
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realmForUi.where(Entry.class).equalTo(EntryFields.WHAT, what).findAll()));
+                    getSupportActionBar().setTitle(getString(R.string.title_performance));
+                    break;
+                case R.id.navigation_burn:
+                    showFavourites = false;
+                    what = Entry.BURN;
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realmForUi.where(Entry.class).equalTo(EntryFields.WHAT, what).findAll()));
+                    getSupportActionBar().setTitle(getString(R.string.title_burns));
+                    break;
+                case R.id.navigation_mutant_vehicles:
+                    showFavourites = false;
+                    what = Entry.MUTANT_VEHICLE;
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realmForUi.where(Entry.class).equalTo(EntryFields.WHAT, what).findAll()));
+                    getSupportActionBar().setTitle(getString(R.string.title_mutant_vehicles));
+                    break;
+                case R.id.navigation_favourites:
+                    what = Entry.ALL;
+                    showFavourites = true;
+                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
+                            MainActivity.this,
+                            realmForUi.where(Entry.class).equalTo(EntryFields.FAVOURITE, true).findAll()));
+                    getSupportActionBar().setTitle(getString(R.string.title_favorite));
+                    break;
+            }
+        }
+
+    };
+    private RealmChangeListener<Home> homeListener = new RealmChangeListener<Home>() {
+        @Override
+        public void onChange(Home element) {
+            binding.setHome(home);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,85 +198,4 @@ public class MainActivity extends BaseActivity implements OnEntryClickListener {
     public void openItem(Entry data) {
         startActivity(DetailActivity.makeIntent(this, data.id));
     }
-
-    private OnTabSelectListener mOnTabSelectListener
-            = new OnTabSelectListener() {
-
-        @Override
-        public void onTabSelected(@IdRes int tabId) {
-            switch (tabId) {
-                case R.id.navigation_main:
-                    showFavourites = false;
-                    what = Entry.ALL;
-                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
-                            MainActivity.this,
-                            realmForUi.where(Entry.class).findAll()));
-                    getSupportActionBar().setTitle(getString(R.string.title_main));
-                    break;
-                case R.id.navigation_theme_camps:
-                    showFavourites = false;
-                    what = Entry.THEME_CAMP;
-                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
-                            MainActivity.this,
-                            realmForUi.where(Entry.class).equalTo(Entry.WHAT, what).findAll()));
-                    getSupportActionBar().setTitle(getString(R.string.title_theme));
-                    break;
-                case R.id.navigation_artworks:
-                    showFavourites = false;
-                    what = Entry.ART_WORK;
-                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
-                            MainActivity.this,
-                            realmForUi.where(Entry.class).equalTo(Entry.WHAT, what).findAll()));
-                    getSupportActionBar().setTitle(getString(R.string.title_artworks));
-                    break;
-                case R.id.navigation_infrastructure:
-                    showFavourites = false;
-                    what = Entry.CLAN;
-                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
-                            MainActivity.this,
-                            realmForUi.where(Entry.class).equalTo(Entry.WHAT, what).findAll()));
-                    getSupportActionBar().setTitle(getString(R.string.title_infrastructure));
-                    break;
-                case R.id.navigation_performance:
-                    showFavourites = false;
-                    what = Entry.PERFORMANCE;
-                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
-                            MainActivity.this,
-                            realmForUi.where(Entry.class).equalTo(Entry.WHAT, what).findAll()));
-                    getSupportActionBar().setTitle(getString(R.string.title_performance));
-                    break;
-                case R.id.navigation_burn:
-                    showFavourites = false;
-                    what = Entry.BURN;
-                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
-                            MainActivity.this,
-                            realmForUi.where(Entry.class).equalTo(Entry.WHAT, what).findAll()));
-                    getSupportActionBar().setTitle(getString(R.string.title_burns));
-                    break;
-                case R.id.navigation_mutant_vehicles:
-                    showFavourites = false;
-                    what = Entry.MUTANT_VEHICLE;
-                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
-                            MainActivity.this,
-                            realmForUi.where(Entry.class).equalTo(Entry.WHAT, what).findAll()));
-                    getSupportActionBar().setTitle(getString(R.string.title_mutant_vehicles));
-                    break;
-                case R.id.navigation_favourites:
-                    what = Entry.ALL;
-                    showFavourites = true;
-                    recyclerView.setAdapter(new EntryRecyclerAdapter(MainActivity.this,
-                            MainActivity.this,
-                            realmForUi.where(Entry.class).equalTo(Entry.FAVOURITE, true).findAll()));
-                    getSupportActionBar().setTitle(getString(R.string.title_favorite));
-                    break;
-            }
-        }
-
-    };
-    private RealmChangeListener<Home> homeListener = new RealmChangeListener<Home>() {
-        @Override
-        public void onChange(Home element) {
-            binding.setHome(home);
-        }
-    };
 }

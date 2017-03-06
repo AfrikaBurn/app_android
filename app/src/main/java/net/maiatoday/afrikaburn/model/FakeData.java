@@ -94,8 +94,8 @@ public class FakeData {
         e.title = title;
         e.blurb = blurb;
         e.what = what;
-        e.latitude = -32.3003346 + random.nextDouble()/100;
-        e.longitude = 19.9951357 + random.nextDouble()/100;
+        e.latitude = -32.326651 + random.nextDouble() / 1000;
+        e.longitude = 19.747868 + random.nextDouble() / 1000;
         e.favourite = random.nextBoolean();
         e.categories = "children/aliens/late night/early morning/ yoga";
     }

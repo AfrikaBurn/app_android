@@ -27,6 +27,8 @@ package net.maiatoday.afrikaburn.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -34,25 +36,48 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import net.maiatoday.afrikaburn.BuildConfig;
 import net.maiatoday.afrikaburn.R;
 import net.maiatoday.afrikaburn.model.Entry;
+import net.maiatoday.afrikaburn.model.EntryFields;
+import net.maiatoday.afrikaburn.model.Home;
+import net.maiatoday.afrikaburn.util.ColorUtils;
+
+import io.realm.RealmObject;
+import io.realm.RealmResults;
 
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     private static final String KEY_ID = BuildConfig.APPLICATION_ID + "." + MapsActivity.class.getSimpleName() + ".key_id";
     private static final String KEY_WHAT = BuildConfig.APPLICATION_ID + "." + MapsActivity.class.getSimpleName() + ".key_what";
     private static final String KEY_FAVOURITES = BuildConfig.APPLICATION_ID + "." + MapsActivity.class.getSimpleName() + ".key_favourites";
-
-    private GoogleMap mMap;
+    private static final int MAX_SNIPPET = 24;
+    Home home;
+    RealmResults<Entry> results;
+    Entry mapCenterEntry;
+    LatLng TANKWA_TOWN = new LatLng(-32.326651, 19.747868);
+    private GoogleMap map;
+    private UiSettings uiSettings;
+    private boolean locationPermissionDenied = false;
     // parameters that determine which points to show and what to query initially, the query can change with search
     private String entryId;
-
     @Entry.What
     private int what;
     private boolean showFavourites;
+
+    public static Intent makeIntent(Context context, String entryId,
+                                    @Entry.What int what, boolean favourites) {
+        Intent i = new Intent(context, MapsActivity.class);
+        i.putExtra(KEY_ID, entryId);
+        i.putExtra(KEY_WHAT, what);
+        i.putExtra(KEY_FAVOURITES, favourites);
+        return i;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +89,23 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        fetchData();
+    }
+
+    private void fetchData() {
+        home = realmForUi.where(Home.class).findFirst();
+        if (showFavourites) {
+            results = realmForUi.where(Entry.class).equalTo(EntryFields.FAVOURITE, true).findAll();
+        } else {
+            if (what != Entry.ALL) {
+                results = realmForUi.where(Entry.class).equalTo(EntryFields.WHAT, what).findAll();
+            } else {
+                results = realmForUi.where(Entry.class).findAll();
+            }
+        }
+        if (!entryId.isEmpty()) {
+            mapCenterEntry = realmForUi.where(Entry.class).equalTo(EntryFields.ID, entryId).findFirst();
+        }
     }
 
     @Override
@@ -94,7 +136,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         return super.onOptionsItemSelected(item);
     }
 
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -106,22 +147,51 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        map = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        setupUI();
+
+        if (!TextUtils.isEmpty(entryId) && RealmObject.isValid(mapCenterEntry)) {
+            pointToPosition(new LatLng(mapCenterEntry.latitude, mapCenterEntry.longitude));
+        } else {
+            pointToPosition(TANKWA_TOWN);
+        }
+
+        showMarkers();
     }
 
+    private void setupUI() {
+        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        uiSettings = map.getUiSettings();
+        uiSettings.setZoomControlsEnabled(true);
+        //  uiSettings.setMyLocationButtonEnabled(true);
+        //TODO request permission map.setMyLocationEnabled(true);
+    }
 
-    public static Intent makeIntent(Context context, String entryId,
-                                    @Entry.What int what, boolean favourites) {
-        Intent i = new Intent(context, MapsActivity.class);
-        i.putExtra(KEY_ID, entryId);
-        i.putExtra(KEY_WHAT, what);
-        i.putExtra(KEY_FAVOURITES, favourites);
-        return i;
+    private void showMarkers() {
+        map.addMarker(new MarkerOptions().position(TANKWA_TOWN).title("Tankwa Town"));
+        if (!results.isEmpty()) {
+            for (Entry e : results) {
+                showMarkerForEntry(e);
+            }
+        }
+
+    }
+
+    private void showMarkerForEntry(Entry e) {
+        LatLng latLng = new LatLng(e.latitude, e.longitude);
+        String snippet = "";
+        if (!TextUtils.isEmpty(e.blurb)) {
+            snippet = e.blurb.substring(0, (e.blurb.length() > MAX_SNIPPET) ? MAX_SNIPPET : e.blurb.length());
+        }
+        @ColorRes
+        int colorResId = Entry.whatColorId(e.what);
+        float hue = ColorUtils.getHsvFromColorId(this, colorResId)[0];
+        map.addMarker(new MarkerOptions()
+                .position(latLng)
+                .title(e.title)
+                .snippet(snippet)
+                .icon(BitmapDescriptorFactory.defaultMarker(hue)));
     }
 
     private void getIntentInfo() {
@@ -134,5 +204,15 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         //noinspection ResourceType
         what = i.getIntExtra(KEY_WHAT, Entry.ALL);
         showFavourites = i.getBooleanExtra(KEY_FAVOURITES, false);
+    }
+
+    private void pointToPosition(LatLng position) {
+        //Build camera position
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(position)
+                .zoom(17).build();
+        //Zoom in and animate the camera.
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        //  map.moveCamera(CameraUpdateFactory.newLatLng(TANKWA_TOWN));
     }
 }

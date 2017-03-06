@@ -38,6 +38,7 @@ import net.maiatoday.afrikaburn.BuildConfig;
 import net.maiatoday.afrikaburn.R;
 import net.maiatoday.afrikaburn.databinding.ActivityDetailBinding;
 import net.maiatoday.afrikaburn.model.Entry;
+import net.maiatoday.afrikaburn.model.EntryFields;
 import net.maiatoday.afrikaburn.ui.adapters.OnDetailEntryClickListener;
 
 import io.realm.Realm;
@@ -50,21 +51,39 @@ public class DetailActivity extends BaseActivity implements OnDetailEntryClickLi
     private static final String KEY_ID = BuildConfig.APPLICATION_ID +"."+ DetailActivity.class.getSimpleName()+".key_id";
 
     String entryId;
+    RealmResults<Entry> results;
     private ActivityDetailBinding binding;
     private Entry entry;
-    RealmResults<Entry> results;
+    private RealmChangeListener<Entry> entryListener = new RealmChangeListener<Entry>() {
+        @Override
+        public void onChange(Entry entry) {
+            //We could do this with two way data binding...
+            if (!RealmObject.isValid(entry)) {
+                Toast.makeText(DetailActivity.this, "Entry deleted.", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                binding.setData(entry);
+            }
+        }
+    };
+
+    public static Intent makeIntent(Context context, String id) {
+        Intent i = new Intent(context, DetailActivity.class);
+        i.putExtra(KEY_ID, id);
+        return i;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getIntentInfo();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
-        results = realmForUi.where(Entry.class).equalTo(Entry.ID, entryId).findAll();
+        results = realmForUi.where(Entry.class).equalTo(EntryFields.ID, entryId).findAll();
         if (results.isEmpty()) {
             Toast.makeText(this, "Woops, can't find the Entry.", Toast.LENGTH_SHORT).show();
             finish();
         } else {
-            entry = realmForUi.where(Entry.class).equalTo(Entry.ID, entryId).findFirst();
+            entry = realmForUi.where(Entry.class).equalTo(EntryFields.ID, entryId).findFirst();
         }
         binding.setData(entry);
         binding.setHandler(this);
@@ -100,11 +119,6 @@ public class DetailActivity extends BaseActivity implements OnDetailEntryClickLi
         return super.onOptionsItemSelected(item);
     }
 
-    public static Intent makeIntent(Context context, String id) {
-        Intent i = new Intent(context, DetailActivity.class);
-        i.putExtra(KEY_ID, id);
-        return i;
-    }
     private void getIntentInfo() {
         Intent i = getIntent();
         if (i.hasExtra(KEY_ID)) {
@@ -119,23 +133,10 @@ public class DetailActivity extends BaseActivity implements OnDetailEntryClickLi
         realmForUi.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                Entry e = realm.where(Entry.class).equalTo(Entry.ID, entryId).findFirst();
+                Entry e = realm.where(Entry.class).equalTo(EntryFields.ID, entryId).findFirst();
                 e.favourite = !e.favourite;
             }
         });
     }
-
-    private RealmChangeListener<Entry> entryListener = new RealmChangeListener<Entry>() {
-        @Override
-        public void onChange(Entry entry) {
-            //We could do this with two way data binding...
-            if (!RealmObject.isValid(entry)) {
-                Toast.makeText(DetailActivity.this, "Entry deleted.", Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
-                binding.setData(entry);
-            }
-        }
-    };
 
 }

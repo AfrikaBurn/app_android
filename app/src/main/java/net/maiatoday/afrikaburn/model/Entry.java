@@ -47,6 +47,13 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 @RealmClass
 public class Entry implements RealmModel {
+    public static final int ALL = -1;
+    public static final int THEME_CAMP = 0;
+    public static final int ART_WORK = 1;
+    public static final int BURN = 2;
+    public static final int PERFORMANCE = 3;
+    public static final int MUTANT_VEHICLE = 4;
+    public static final int CLAN = 5;
     @PrimaryKey
     @Required
     public
@@ -68,34 +75,6 @@ public class Entry implements RealmModel {
     /// Favourite - only stored locally
     public boolean favourite;
 
-    public String getStartText() {
-        //TODO format the start time if it exists
-        return "Thursday 20 to 7";
-    }
-
-    public String latitudeText() {
-        if (latitude != null) {
-            return String.valueOf(latitude);
-        }
-        return "";
-    }
-
-    public String longitudeText() {
-        if (longitude != null) {
-            return String.valueOf(longitude);
-        }
-        return "";
-    }
-
-    public int whatDrawableId() {
-        return whatToDrawableId(what);
-    }
-
-
-    public static final String WHAT = "what";
-    public static final String FAVOURITE = "favourite";
-    public static final String ID = "id";
-
     @DrawableRes
     public static int whatToDrawableId(int what) {
         switch (what) {
@@ -113,26 +92,6 @@ public class Entry implements RealmModel {
                 return R.drawable.ic_infrastructure;
             default:
                 return R.drawable.ic_theme;
-        }
-    }
-
-    @StringRes
-    public int getWhatString() {
-        switch (what) {
-            case THEME_CAMP:
-                return R.string.title_one_theme;
-            case ART_WORK:
-                return R.string.title_one_artworks;
-            case BURN:
-                return R.string.title_one_burns;
-            case PERFORMANCE:
-                return R.string.title_one_performance;
-            case MUTANT_VEHICLE:
-                return R.string.title_one_mutant_vehicles;
-            case CLAN:
-                return R.string.title_one_infrastructure;
-            default:
-                return R.string.title_one_theme;
         }
     }
 
@@ -174,6 +133,50 @@ public class Entry implements RealmModel {
         }
     }
 
+    public String getStartText() {
+        //TODO format the start time if it exists
+        return "Thursday 20 to 7";
+    }
+
+    public String latitudeText() {
+        if (latitude != null) {
+            return String.valueOf(latitude);
+        }
+        return "";
+    }
+
+    public String longitudeText() {
+        if (longitude != null) {
+            return String.valueOf(longitude);
+        }
+        return "";
+    }
+
+    public int whatDrawableId() {
+        return whatToDrawableId(what);
+    }
+
+    @StringRes
+    public int getWhatString() {
+        switch (what) {
+            case THEME_CAMP:
+                return R.string.title_one_theme;
+            case ART_WORK:
+                return R.string.title_one_artworks;
+            case BURN:
+                return R.string.title_one_burns;
+            case PERFORMANCE:
+                return R.string.title_one_performance;
+            case MUTANT_VEHICLE:
+                return R.string.title_one_mutant_vehicles;
+            case CLAN:
+                return R.string.title_one_infrastructure;
+            case ALL:
+                return R.string.app_name;
+            default:
+                return R.string.title_one_theme;
+        }
+    }
     @Retention(SOURCE)
     @IntDef({ALL,
             THEME_CAMP,
@@ -183,11 +186,4 @@ public class Entry implements RealmModel {
             MUTANT_VEHICLE,
             CLAN})
     public @interface What {}
-    public static final int ALL = -1;
-    public static final int THEME_CAMP = 0;
-    public static final int ART_WORK = 1;
-    public static final int BURN = 2;
-    public static final int PERFORMANCE = 3;
-    public static final int MUTANT_VEHICLE = 4;
-    public static final int CLAN = 5;
 }
