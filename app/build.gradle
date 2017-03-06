@@ -59,22 +59,29 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+    //Support lib dependencies
     compile "com.android.support:appcompat-v7:${supportLibraryVersion}"
     compile "com.android.support:recyclerview-v7:${supportLibraryVersion}"
     compile "com.android.support:design:${supportLibraryVersion}"
     compile "com.android.support:support-vector-drawable:${supportLibraryVersion}"
-
-    compile "com.google.android.gms:play-services-gcm:${playServicesVersion}"
-    compile "com.google.android.gms:play-services-maps:${playServicesVersion}"
-
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
 
+    //Play Services and firebase dependencies
+    compile "com.google.android.gms:play-services-gcm:${playServicesVersion}"
+    compile "com.google.android.gms:play-services-maps:${playServicesVersion}"
+    compile "com.google.firebase:firebase-crash:${firebaseVersion}"
+
+    //Realm dependencies
     compile "io.realm:android-adapters:${realmAdapterVersion}"
+    annotationProcessor 'dk.ilios:realmfieldnameshelper:1.1.1'
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.uphyca:stetho_realm:2.0.0'
 
+    //Other dependencies
     compile 'com.roughike:bottom-bar:2.1.1'
 
+    //Test dependencies
     testCompile 'junit:junit:4.12'
-    annotationProcessor 'dk.ilios:realmfieldnameshelper:1.1.1'
 }
+
+apply plugin: 'com.google.gms.google-services'
