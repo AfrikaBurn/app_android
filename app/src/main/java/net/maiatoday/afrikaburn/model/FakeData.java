@@ -86,6 +86,8 @@ public class FakeData {
             }
         });
 
+        //   FirebaseCrash.log("Fake data generated");
+
     }
 
     private static void oneEntry(Realm realm, String title, String blurb, @Entry.What int what) {
