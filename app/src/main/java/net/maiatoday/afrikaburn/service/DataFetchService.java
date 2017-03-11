@@ -32,33 +32,13 @@ import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.OneoffTask;
 import com.google.android.gms.gcm.TaskParams;
 
-import net.maiatoday.afrikaburn.model.Entry;
-import net.maiatoday.afrikaburn.model.FakeData;
-import net.maiatoday.afrikaburn.model.Home;
-
-import java.util.Date;
-import java.util.UUID;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
+import net.maiatoday.afrikaburn.model.CSVDataLoader;
+import net.maiatoday.afrikaburn.model.DataLoader;
 
 public class DataFetchService extends GcmTaskService {
     private static final String TAG = "DataFetchService";
 
     private static final String TASK_TAG_FETCH_DATA = "AB_fetch_data";
-
-    @Override
-    public int onRunTask(TaskParams taskParams) {
-        Log.d(TAG, "onRunTask: I fetch data NOW");
-        //TODO fetch the data from the interwebz
-        Realm realm = Realm.getDefaultInstance();
-        // Put the data into Realm
-        // Add fake data for now TODO remove
-        FakeData.generateFakeData(realm); //TODO remove
-        realm.close();
-        return GcmNetworkManager.RESULT_SUCCESS;
-    }
-
 
     // static method to trigger the data fetch job
     public static void goFetchData(Context context) {
@@ -72,6 +52,25 @@ public class DataFetchService extends GcmTaskService {
                 .build();
 
         GcmNetworkManager.getInstance(context.getApplicationContext()).schedule(task);
+    }
+
+    public static void goFetchDataNow(Context context) {
+        //TODO fetch the data from the interwebz
+        DataLoader loader = new CSVDataLoader(context);
+        // Put the data into Realm
+        // Add fake data for now TODO remove
+        loader.addData(); //TODO remove
+    }
+
+    @Override
+    public int onRunTask(TaskParams taskParams) {
+        Log.d(TAG, "onRunTask: I fetch data NOW");
+        //TODO fetch the data from the interwebz
+        DataLoader loader = new CSVDataLoader(this);
+        // Put the data into Realm
+        // Add fake data for now TODO remove
+        loader.addData(); //TODO remove
+        return GcmNetworkManager.RESULT_SUCCESS;
     }
 
 }
