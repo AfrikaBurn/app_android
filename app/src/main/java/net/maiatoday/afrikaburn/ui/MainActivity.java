@@ -187,7 +187,7 @@ public class MainActivity extends BaseActivity implements OnEntryClickListener {
                 startActivity(new Intent(this, AboutActivity.class));
                 return true;
             case R.id.action_refresh:
-                DataFetchService.goFetchDataNow(this);
+                DataFetchService.goFetchData(this);
                 return true;
         }
 

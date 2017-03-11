@@ -29,5 +29,7 @@ package net.maiatoday.afrikaburn.model;
  */
 
 public interface DataLoader {
-    void addData();
+    void addDefaultData();
+
+    void fetchDataFromNetwork();
 }

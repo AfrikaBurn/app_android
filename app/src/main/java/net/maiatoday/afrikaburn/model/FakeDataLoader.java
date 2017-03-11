@@ -52,7 +52,7 @@ public class FakeDataLoader implements DataLoader {
     }
 
     @Override
-    public void addData() {
+    public void addDefaultData() {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -104,5 +104,10 @@ public class FakeDataLoader implements DataLoader {
 
         realm.close();
 
+    }
+
+    @Override
+    public void fetchDataFromNetwork() {
+        addDefaultData();
     }
 }

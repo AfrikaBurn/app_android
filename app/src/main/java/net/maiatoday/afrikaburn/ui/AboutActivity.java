@@ -25,22 +25,32 @@
 package net.maiatoday.afrikaburn.ui;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import net.maiatoday.afrikaburn.R;
+import net.maiatoday.afrikaburn.databinding.ActivityAboutBinding;
+import net.maiatoday.afrikaburn.model.Home;
 
-public class AboutActivity extends AppCompatActivity {
+import io.realm.RealmResults;
+
+public class AboutActivity extends BaseActivity {
+
+    private static final String TAG = "AboutActivity";
+    private ActivityAboutBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_about);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        View all = findViewById(R.id.about_all);
+        View all = binding.aboutAll;
         all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +60,17 @@ public class AboutActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        PackageInfo pInfo = null;
+        try {
+            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "onCreate: can't find version number?!", e);
+        }
+        String version = pInfo.versionName;
+        binding.textVersion.setText("Version " + version + "-" + pInfo.versionCode);
+        RealmResults<Home> homeResults = realmForUi.where(Home.class).findAll();
+        Home home = homeResults.first();
+        binding.textLastUpdate.setText("Last updated " + home.lastDataFetch.toString());
     }
 
     @Override

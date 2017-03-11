@@ -26,23 +26,30 @@ package net.maiatoday.afrikaburn.model;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
+import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import com.opencsv.CSVReader;
 
+import net.maiatoday.afrikaburn.BuildConfig;
 import net.maiatoday.afrikaburn.R;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.annotation.Retention;
+import java.net.URL;
+import java.net.URLConnection;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
@@ -94,10 +101,9 @@ public class CSVDataLoader implements DataLoader {
     }
 
     @Override
-    public void addData() {
-
+    public void addDefaultData() {
+        startUpdate();
         List<Entry> entries = new ArrayList<>(); //TODO fix? we load everything into memory
-        int limit = 9999; //TODO will we ever have more
 
         InputStream is = context.getResources().openRawResource(R.raw.entries);
 
@@ -114,16 +120,16 @@ public class CSVDataLoader implements DataLoader {
                 try {
                     entries.add(oneEntry(rowData));
                 } catch (InvalidParameterException e) {
-                    Log.d(TAG, "addData: Bad row");
+                    Log.d(TAG, "addDefaultData: Bad row");
                 }
             }
         } catch (IOException ex) {
-            Log.e(TAG, "addData: bad read from entries file", ex);
+            Log.e(TAG, "addDefaultData: bad read from entries file", ex);
         } finally {
             try {
                 is.close();
             } catch (IOException e) {
-                Log.e(TAG, "addData: Could not close input stream.", e);
+                Log.e(TAG, "addDefaultData: Could not close input stream.", e);
             }
         }
 
@@ -132,7 +138,74 @@ public class CSVDataLoader implements DataLoader {
         realm.copyToRealmOrUpdate(entries);
         realm.commitTransaction();
         realm.close();
+        stopUpdate();
 
+    }
+
+    @WorkerThread
+    @Override
+    public void fetchDataFromNetwork() {
+        startUpdate();
+        List<Entry> entries = new ArrayList<>(); //TODO fix? we load everything into memory
+        try {
+            URL url = new URL(BuildConfig.DATA_URL);
+            URLConnection connection = url.openConnection();
+            connection.connect();
+            InputStream is = new BufferedInputStream(url.openStream());
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+
+            CSVReader reader = new CSVReader(bufferedReader);
+            List<String[]> myEntries = reader.readAll();
+            for (String[] rowData : myEntries) {
+                if (rowData[NID].equals("Nid")) {
+                    //This is the first line so skip
+                    continue;
+                }
+                try {
+                    entries.add(oneEntry(rowData));
+                } catch (InvalidParameterException e) {
+                    Log.d(TAG, "addDefaultData: Bad row");
+                }
+            }
+            is.close();
+        } catch (IOException ex) {
+            Log.e(TAG, "addDefaultData: bad read from entries file", ex);
+        }
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(entries);
+        realm.commitTransaction();
+        realm.close();
+        stopUpdate();
+    }
+
+    private void startUpdate() {
+        Realm r = Realm.getDefaultInstance();
+        r.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Home> homeResults = realm.where(Home.class).findAll();
+                Home home = homeResults.first();
+                home.busyFetching = true;
+            }
+        });
+        r.close();
+    }
+
+    private void stopUpdate() {
+        Realm r = Realm.getDefaultInstance();
+        r.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Home> homeResults = realm.where(Home.class).findAll();
+                Home home = homeResults.first();
+                home.busyFetching = true;
+                home.lastDataFetch = new Date();
+            }
+        });
+        r.close();
     }
 
     @Retention(SOURCE)
