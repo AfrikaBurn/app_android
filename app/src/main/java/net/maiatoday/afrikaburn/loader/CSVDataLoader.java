@@ -108,46 +108,7 @@ public class CSVDataLoader implements DataLoader {
 
     @Override
     public void addDefaultData() {
-        startUpdate();
-
-        List<Entry> entries = new ArrayList<>(); //TODO fix? we load everything into memory
-
-        InputStream is = context.getResources().openRawResource(R.raw.entries);
-
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
-
-        CSVReader reader = new CSVReader(bufferedReader);
-        try {
-            List<String[]> myEntries = reader.readAll();
-            for (String[] rowData : myEntries) {
-                if (rowData[NID].equals("Nid")) {
-                    //This is the first line so skip
-                    continue;
-                }
-                try {
-                    String nid = rowData[0];
-                    entries.add(oneEntry(rowData, favourites.contains(nid)));
-                } catch (InvalidParameterException e) {
-                    Log.d(TAG, "addDefaultData: Bad row");
-                }
-            }
-        } catch (IOException ex) {
-            Log.e(TAG, "addDefaultData: bad read from entries file", ex);
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                Log.e(TAG, "addDefaultData: Could not close input stream.", e);
-            }
-        }
-
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(entries);
-        realm.commitTransaction();
-        realm.close();
-        stopUpdate();
-
+        fetchData(true);
     }
 
     private List<String> getFavouriteList() {
@@ -164,16 +125,25 @@ public class CSVDataLoader implements DataLoader {
     @WorkerThread
     @Override
     public void fetchDataFromNetwork() {
+        fetchData(false);
+    }
+
+    private void fetchData(boolean localfile) {
+        Log.d(TAG, "fetchData() called with: localfile = [" + localfile + "]");
         startUpdate();
         List<Entry> entries = new ArrayList<>(); //TODO fix? we load everything into memory
         try {
-            URL url = new URL(BuildConfig.DATA_URL);
-            URLConnection connection = url.openConnection();
-            connection.connect();
-            InputStream is = new BufferedInputStream(url.openStream());
+            InputStream is;
+            if (localfile) {
+                is = context.getResources().openRawResource(R.raw.entries);
+            } else {
+                URL url = new URL(BuildConfig.DATA_URL);
+                URLConnection connection = url.openConnection();
+                connection.connect();
+                is = new BufferedInputStream(url.openStream());
+            }
 
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
-
             CSVReader reader = new CSVReader(bufferedReader);
             List<String[]> myEntries = reader.readAll();
             for (String[] rowData : myEntries) {
@@ -202,6 +172,7 @@ public class CSVDataLoader implements DataLoader {
     }
 
     private void startUpdate() {
+        Log.d(TAG, "startUpdate() called");
         Realm r = Realm.getDefaultInstance();
         r.executeTransactionAsync(new Realm.Transaction() {
             @Override
@@ -215,6 +186,7 @@ public class CSVDataLoader implements DataLoader {
     }
 
     private void stopUpdate() {
+        Log.d(TAG, "stopUpdate() called");
         Realm r = Realm.getDefaultInstance();
         r.executeTransactionAsync(new Realm.Transaction() {
             @Override
