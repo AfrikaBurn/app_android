@@ -22,15 +22,14 @@
  * SOFTWARE.
  */
 
-package net.maiatoday.afrikaburn.ui.adapters;
-
-import net.maiatoday.afrikaburn.model.Entry;
+package net.maiatoday.afrikaburn.loader;
 
 /**
- * Created by maia on 2017/03/04.
+ * Created by maia on 2017/03/11.
  */
 
-public interface OnEntryClickListener {
-    void openItem(Entry data);
-    void toggleFavourite(Entry data);
+public interface DataLoader {
+    void addDefaultData();
+
+    void fetchDataFromNetwork();
 }

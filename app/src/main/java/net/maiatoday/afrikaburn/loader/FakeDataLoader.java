@@ -22,7 +22,10 @@
  * SOFTWARE.
  */
 
-package net.maiatoday.afrikaburn.model;
+package net.maiatoday.afrikaburn.loader;
+
+import net.maiatoday.afrikaburn.model.Entry;
+import net.maiatoday.afrikaburn.model.Home;
 
 import java.util.Date;
 import java.util.Random;
@@ -36,10 +39,24 @@ import io.realm.RealmResults;
  * Created by maia on 2017/03/04.
  */
 
-public class FakeData {
+public class FakeDataLoader implements DataLoader {
     static Random random = new Random();
 
-    public static void generateFakeData(Realm realm) {
+    private static void oneEntry(Realm realm, String title, String blurb, @Entry.What int what) {
+        String uuid = UUID.randomUUID().toString();
+        Entry e = realm.createObject(Entry.class, uuid);
+        e.title = title;
+        e.blurb = blurb;
+        e.what = what;
+        e.latitude = -32.326651 + random.nextDouble() / 1000;
+        e.longitude = 19.747868 + random.nextDouble() / 1000;
+        e.favourite = random.nextBoolean();
+        e.categories = "children/aliens/late night/early morning/ yoga";
+    }
+
+    @Override
+    public void addDefaultData() {
+        Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -88,17 +105,12 @@ public class FakeData {
 
         //   FirebaseCrash.log("Fake data generated");
 
+        realm.close();
+
     }
 
-    private static void oneEntry(Realm realm, String title, String blurb, @Entry.What int what) {
-        String uuid = UUID.randomUUID().toString();
-        Entry e = realm.createObject(Entry.class, uuid);
-        e.title = title;
-        e.blurb = blurb;
-        e.what = what;
-        e.latitude = -32.326651 + random.nextDouble() / 1000;
-        e.longitude = 19.747868 + random.nextDouble() / 1000;
-        e.favourite = random.nextBoolean();
-        e.categories = "children/aliens/late night/early morning/ yoga";
+    @Override
+    public void fetchDataFromNetwork() {
+        addDefaultData();
     }
 }

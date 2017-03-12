@@ -61,6 +61,7 @@ public class Entry implements RealmModel {
     @Required
     public String title;
     public String blurb;
+    public String shortBlurb;
     /// Free-form description of activities and vague indication of time, will be searchable
     public String categories;
     /// If not null there is a specific start time, sortof
@@ -186,4 +187,5 @@ public class Entry implements RealmModel {
             MUTANT_VEHICLE,
             CLAN})
     public @interface What {}
+
 }

@@ -30,35 +30,21 @@ import android.util.Log;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.OneoffTask;
+import com.google.android.gms.gcm.PeriodicTask;
+import com.google.android.gms.gcm.Task;
 import com.google.android.gms.gcm.TaskParams;
 
-import net.maiatoday.afrikaburn.model.Entry;
-import net.maiatoday.afrikaburn.model.FakeData;
+import net.maiatoday.afrikaburn.loader.CSVDataLoader;
+import net.maiatoday.afrikaburn.loader.DataLoader;
 import net.maiatoday.afrikaburn.model.Home;
 
-import java.util.Date;
-import java.util.UUID;
-
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class DataFetchService extends GcmTaskService {
     private static final String TAG = "DataFetchService";
 
     private static final String TASK_TAG_FETCH_DATA = "AB_fetch_data";
-
-    @Override
-    public int onRunTask(TaskParams taskParams) {
-        Log.d(TAG, "onRunTask: I fetch data NOW");
-        //TODO fetch the data from the interwebz
-        Realm realm = Realm.getDefaultInstance();
-        // Put the data into Realm
-        // Add fake data for now TODO remove
-        FakeData.generateFakeData(realm); //TODO remove
-        realm.close();
-        return GcmNetworkManager.RESULT_SUCCESS;
-    }
-
+    private static final String TASK_TAG_FETCH_DATA_PERIODIC = "AB_fetch_data_periodic";
 
     // static method to trigger the data fetch job
     public static void goFetchData(Context context) {
@@ -68,10 +54,43 @@ public class DataFetchService extends GcmTaskService {
                 .setTag(TASK_TAG_FETCH_DATA)
                 .setUpdateCurrent(true) // If there is a pending job, do this one
                 .setExecutionWindow(0L, 30L) // within the next 30 seconds when convenient
-               // .setRequiredNetwork(Task.NETWORK_STATE_ANY) //TODO set the required network once we really access the interwebz
+                .setRequiredNetwork(Task.NETWORK_STATE_ANY)
                 .build();
 
         GcmNetworkManager.getInstance(context.getApplicationContext()).schedule(task);
+        PeriodicTask taskPeriodic = new PeriodicTask.Builder()
+                .setService(DataFetchService.class)
+                .setTag(TASK_TAG_FETCH_DATA_PERIODIC)
+                .setUpdateCurrent(true) // If there is a pending job, do this one
+                .setRequiredNetwork(Task.NETWORK_STATE_UNMETERED)
+                .setRequiresCharging(true)
+                .setPeriod(3 * 60 * 60) //update every 3 hour but only when there is network and it is charging
+                .setPersisted(true)
+                .build();
+
+        GcmNetworkManager.getInstance(context.getApplicationContext()).schedule(taskPeriodic);
+    }
+
+    public static void seedDataOnFirstRun(Context context) {
+        Realm realm = Realm.getDefaultInstance();
+        if (realm.isEmpty()) {
+            realm.beginTransaction();
+            realm.createObject(Home.class);
+            realm.commitTransaction();
+            realm.close();
+            DataLoader loader = new CSVDataLoader(context);
+            loader.addDefaultData();
+        }
+
+    }
+
+    @Override
+    public int onRunTask(TaskParams taskParams) {
+        Log.d(TAG, "onRunTask: I fetch data NOW");
+        DataLoader loader = new CSVDataLoader(this);
+        // Put the data into Realm
+        loader.fetchDataFromNetwork();
+        return GcmNetworkManager.RESULT_SUCCESS;
     }
 
 }
