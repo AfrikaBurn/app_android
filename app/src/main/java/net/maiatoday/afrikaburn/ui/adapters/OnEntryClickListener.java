@@ -31,5 +31,6 @@ import net.maiatoday.afrikaburn.model.Entry;
  */
 
 public interface OnEntryClickListener {
-    public void openItem(Entry data);
+    void openItem(Entry data);
+    void toggleFavourite(Entry data);
 }

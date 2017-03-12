@@ -47,6 +47,7 @@ import net.maiatoday.afrikaburn.service.DataFetchService;
 import net.maiatoday.afrikaburn.ui.adapters.EntryRecyclerAdapter;
 import net.maiatoday.afrikaburn.ui.adapters.OnEntryClickListener;
 
+import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
@@ -197,5 +198,17 @@ public class MainActivity extends BaseActivity implements OnEntryClickListener {
     @Override
     public void openItem(Entry data) {
         startActivity(DetailActivity.makeIntent(this, data.id));
+    }
+
+    @Override
+    public void toggleFavourite(Entry data) {
+        final String id = data.id;
+        realmForUi.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Entry e = realm.where(Entry.class).equalTo(EntryFields.ID, id).findFirst();
+                e.favourite  = !e.favourite;
+            }
+        });
     }
 }
