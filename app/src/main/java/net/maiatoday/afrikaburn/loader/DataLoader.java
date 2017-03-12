@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package net.maiatoday.afrikaburn.model;
+package net.maiatoday.afrikaburn.loader;
 
 /**
  * Created by maia on 2017/03/11.

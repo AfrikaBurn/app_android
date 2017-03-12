@@ -22,7 +22,10 @@
  * SOFTWARE.
  */
 
-package net.maiatoday.afrikaburn.model;
+package net.maiatoday.afrikaburn.loader;
+
+import net.maiatoday.afrikaburn.model.Entry;
+import net.maiatoday.afrikaburn.model.Home;
 
 import java.util.Date;
 import java.util.Random;

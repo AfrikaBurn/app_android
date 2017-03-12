@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package net.maiatoday.afrikaburn.model;
+package net.maiatoday.afrikaburn.loader;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
@@ -33,6 +33,9 @@ import com.opencsv.CSVReader;
 
 import net.maiatoday.afrikaburn.BuildConfig;
 import net.maiatoday.afrikaburn.R;
+import net.maiatoday.afrikaburn.model.Entry;
+import net.maiatoday.afrikaburn.model.EntryFields;
+import net.maiatoday.afrikaburn.model.Home;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -69,12 +72,14 @@ public class CSVDataLoader implements DataLoader {
     private static final String TAG = "CSVDataLoader";
     static Random random = new Random();
     private final Context context;
+    List<String> favourites;
 
     public CSVDataLoader(Context context) {
         this.context = context;
+        favourites = getFavouriteList();
     }
 
-    private static Entry oneEntry(String[] row) throws InvalidParameterException {
+    private static Entry oneEntry(String[] row, Boolean favourite) throws InvalidParameterException {
         if (row.length < MAX_COLUMNS) {
             throw new InvalidParameterException("Expected 7 fields but got " + row.length);
         }
@@ -87,6 +92,7 @@ public class CSVDataLoader implements DataLoader {
         e.categories = row[CATEGORY];
         e.shortBlurb = row[GUIDE];
         e.what = whatFromType(row[TYPE]);
+        e.favourite = favourite;
         return e;
     }
 
@@ -103,6 +109,7 @@ public class CSVDataLoader implements DataLoader {
     @Override
     public void addDefaultData() {
         startUpdate();
+
         List<Entry> entries = new ArrayList<>(); //TODO fix? we load everything into memory
 
         InputStream is = context.getResources().openRawResource(R.raw.entries);
@@ -118,7 +125,8 @@ public class CSVDataLoader implements DataLoader {
                     continue;
                 }
                 try {
-                    entries.add(oneEntry(rowData));
+                    String nid = rowData[0];
+                    entries.add(oneEntry(rowData, favourites.contains(nid)));
                 } catch (InvalidParameterException e) {
                     Log.d(TAG, "addDefaultData: Bad row");
                 }
@@ -142,6 +150,17 @@ public class CSVDataLoader implements DataLoader {
 
     }
 
+    private List<String> getFavouriteList() {
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<Entry> results = realm.where(Entry.class).equalTo(EntryFields.FAVOURITE, true).findAll();
+        List<String> list = new ArrayList<>(results.size());
+        for (Entry e : results) {
+            list.add(e.id);
+        }
+        realm.close();
+        return list;
+    }
+
     @WorkerThread
     @Override
     public void fetchDataFromNetwork() {
@@ -163,7 +182,8 @@ public class CSVDataLoader implements DataLoader {
                     continue;
                 }
                 try {
-                    entries.add(oneEntry(rowData));
+                    String nid = rowData[0];
+                    entries.add(oneEntry(rowData, favourites.contains(nid)));
                 } catch (InvalidParameterException e) {
                     Log.d(TAG, "addDefaultData: Bad row");
                 }

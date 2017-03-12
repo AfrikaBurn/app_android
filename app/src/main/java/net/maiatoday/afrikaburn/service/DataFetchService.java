@@ -34,8 +34,8 @@ import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
 import com.google.android.gms.gcm.TaskParams;
 
-import net.maiatoday.afrikaburn.model.CSVDataLoader;
-import net.maiatoday.afrikaburn.model.DataLoader;
+import net.maiatoday.afrikaburn.loader.CSVDataLoader;
+import net.maiatoday.afrikaburn.loader.DataLoader;
 import net.maiatoday.afrikaburn.model.Home;
 
 import io.realm.Realm;
@@ -64,7 +64,7 @@ public class DataFetchService extends GcmTaskService {
                 .setUpdateCurrent(true) // If there is a pending job, do this one
                 .setRequiredNetwork(Task.NETWORK_STATE_UNMETERED)
                 .setRequiresCharging(true)
-                .setPeriod(60 * 60) //update every hour but only when there is network and it is charging
+                .setPeriod(3 * 60 * 60) //update every 3 hour but only when there is network and it is charging
                 .setPersisted(true)
                 .build();
 
