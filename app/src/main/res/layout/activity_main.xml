@@ -30,7 +30,7 @@
     <data>
         <variable
             name="home"
-            type="net.maiatoday.afrikaburn.model.Home"/>
+            type="com.afrikaburn.app.model.DataHistory"/>
         <import type="android.view.View"/>
     </data>
     <android.support.design.widget.CoordinatorLayout
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="net.maiatoday.afrikaburn.ui.MainActivity">
+        tools:context="net.maiatoday.afrikaburn.com.maiatoday.afrikaburn.ui.MainActivity">
 
         <FrameLayout
             android:id="@+id/content"

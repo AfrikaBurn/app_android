@@ -30,11 +30,11 @@
 
         <variable
             name="data"
-            type="net.maiatoday.afrikaburn.model.Entry"/>
+            type="com.afrikaburn.app.model.Entry"/>
 
         <variable
             name="handler"
-            type="net.maiatoday.afrikaburn.ui.adapters.OnDetailEntryClickListener"/>
+            type="com.afrikaburn.app.ui.adapters.OnDetailEntryClickListener"/>
 
         <import type="android.view.View"/>
     </data>

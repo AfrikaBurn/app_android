@@ -34,7 +34,7 @@ android {
     compileSdkVersion sdkVersion
     buildToolsVersion buildTools
     defaultConfig {
-        applicationId "net.maiatoday.afrikaburn"
+        applicationId "com.afrikaburn.app"
         minSdkVersion 16
         targetSdkVersion sdkVersion
         versionCode 3

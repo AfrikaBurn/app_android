@@ -30,7 +30,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="net.maiatoday.afrikaburn.ui.AboutActivity">
+        tools:context="net.maiatoday.afrikaburn.com.maiatoday.afrikaburn.ui.AboutActivity">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/about_all"
