@@ -35,6 +35,8 @@ import android.view.MenuItem;
 import com.afrikaburn.app.BuildConfig;
 import com.afrikaburn.app.R;
 import com.afrikaburn.app.model.EntryFields;
+import com.afrikaburn.app.util.MapUtils;
+import com.cocoahero.android.gmaps.addons.mapbox.MapBoxOfflineTileProvider;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,12 +44,18 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.afrikaburn.app.model.DataHistory;
 import com.afrikaburn.app.util.ColorUtils;
 
 import com.afrikaburn.app.model.Entry;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+
+import java.io.File;
+import java.io.InputStream;
 
 import io.realm.RealmObject;
 import io.realm.RealmResults;
@@ -61,6 +69,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     RealmResults<Entry> results;
     Entry mapCenterEntry;
     LatLng TANKWA_TOWN = new LatLng(-32.326651, 19.747868);
+    LatLng TANKWA_TOWN_OVERLAY = new LatLng(-32.328554, 19.746236);
     private GoogleMap map;
     private UiSettings uiSettings;
     private boolean locationPermissionDenied = false;
@@ -69,6 +78,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     @Entry.What
     private int what;
     private boolean showFavourites;
+    private MapBoxOfflineTileProvider provider;
 
     public static Intent makeIntent(Context context, String entryId,
                                     @Entry.What int what, boolean favourites) {
@@ -90,6 +100,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         fetchData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        provider.close();
     }
 
     private void fetchData() {
@@ -161,11 +177,24 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     }
 
     private void setupUI() {
-        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        map.setMapType(GoogleMap.MAP_TYPE_NONE);
         uiSettings = map.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
         //  uiSettings.setMyLocationButtonEnabled(true);
         //TODO request permission map.setMyLocationEnabled(true);
+
+        TileOverlayOptions opts = new TileOverlayOptions();
+        File myMBTiles = MapUtils.getMBTilesHandle(this);
+        provider = new MapBoxOfflineTileProvider(myMBTiles);
+        opts.tileProvider(provider);
+        TileOverlay overlay = map.addTileOverlay(opts);
+
+
+        GroundOverlayOptions tankwaMap = new GroundOverlayOptions()
+                .image(BitmapDescriptorFactory.fromResource(R.mipmap.overlay))
+                .position(TANKWA_TOWN_OVERLAY, 2191f, 1534f);
+        map.addGroundOverlay(tankwaMap);
+
     }
 
     private void showMarkers() {

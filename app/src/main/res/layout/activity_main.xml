@@ -29,7 +29,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="home"
+            name="dataHistory"
             type="com.afrikaburn.app.model.DataHistory"/>
         <import type="android.view.View"/>
     </data>
@@ -51,7 +51,7 @@
                 android:indeterminate="true"
                 android:layout_gravity="center"
                 style="?android:attr/progressBarStyle"
-                android:visibility="@{home.busyFetching?View.VISIBLE:View.GONE}"/>
+                android:visibility="gone"/>
 
         </FrameLayout>
         <android.support.v7.widget.RecyclerView

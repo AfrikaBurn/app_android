@@ -54,7 +54,7 @@ import io.realm.RealmResults;
 
 public class MainActivity extends BaseActivity implements com.afrikaburn.app.ui.adapters.OnEntryClickListener {
 
-    DataHistory home;
+    DataHistory dataHistory;
     RecyclerView recyclerView;
     @Entry.What
     int what = Entry.ALL;
@@ -135,10 +135,10 @@ public class MainActivity extends BaseActivity implements com.afrikaburn.app.ui.
         }
 
     };
-    private RealmChangeListener<DataHistory> homeListener = new RealmChangeListener<DataHistory>() {
+    private RealmChangeListener<DataHistory> dataHistoryListener = new RealmChangeListener<DataHistory>() {
         @Override
         public void onChange(DataHistory element) {
-            binding.setHome(home);
+            binding.setDataHistory(dataHistory);
         }
     };
 
@@ -148,10 +148,10 @@ public class MainActivity extends BaseActivity implements com.afrikaburn.app.ui.
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         RealmResults<DataHistory> res = realmForUi.where(DataHistory.class).findAll();
         if (!res.isEmpty()) {
-            home = res.get(0);
-            RealmObject.addChangeListener(home, homeListener);
+            dataHistory = res.get(0);
+            RealmObject.addChangeListener(dataHistory, dataHistoryListener);
         }
-        binding.setHome(home);
+        binding.setDataHistory(dataHistory);
         recyclerView = binding.list;
         setupRecyclerView();
 

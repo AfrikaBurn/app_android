@@ -25,20 +25,35 @@
 package com.afrikaburn.app.ui;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.afrikaburn.app.service.DataFetchService;
+import com.afrikaburn.app.util.MapUtils;
 
 public class SplashActivity extends AppCompatActivity {
 
+    SetupTilesTask setupTilesTask = new SetupTilesTask();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DataFetchService.seedDataOnFirstRun(this);
         DataFetchService.goFetchData(this);
+        setupTilesTask.execute();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private class SetupTilesTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            // Ok to use async task because it doesn't come back onto the main thread so it won't
+            // won't crash if the activity goes away
+            //Use the application context incase this activity goes away
+            MapUtils.setupMBTilesFile(SplashActivity.this.getApplicationContext());
+            return null;
+        }
     }
 }
