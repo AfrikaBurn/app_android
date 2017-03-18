@@ -5,6 +5,8 @@ The Afrika Burn app is an opensource project for ongoing development of mobile s
 
 You can build the app without the keystore file. If you need to build a release version, get the keystore file from the vault and follow [this gist](https://gist.github.com/maiatoday/2df1e24224b9def4fa0b11cd2d5a6ff6) to set it up. Use AB for the app indicator instead of APP because this what is in the gradle file.
 
+To do the offline tiles the project uses a fork of the [android-gmaps-addons library](https://github.com/maiatoday/android-gmaps-addons). So when first cloning the project you need to use the following command `clone --recursive <insert this project url>` Also not included in this project for reasons of size is an mbtiles file which has to be placed in the raw folder with the name `ab.mbtiles`
+
 # Debug
 ## How to debug with Realm and Stetho
 1. Open chrome and go to chrome://inspect

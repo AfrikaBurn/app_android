@@ -22,5 +22,14 @@
  * SOFTWARE.
  */
 
-include ':app'
-include ':android-gmaps-addons'
+package com.afrikaburn.app.ui;
+
+import com.afrikaburn.app.model.Entry;
+
+/**
+ * Created by maia on 2017/03/04.
+ */
+
+public interface OnEntryClickListener {
+    public void openItem(Entry data);
+}

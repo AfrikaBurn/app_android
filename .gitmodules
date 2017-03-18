@@ -1,0 +1,3 @@
+[submodule "android-gmaps-addons"]
+	path = android-gmaps-addons
+	url = git@github.com:maiatoday/android-gmaps-addons.git

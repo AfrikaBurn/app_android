@@ -22,5 +22,33 @@
  * SOFTWARE.
  */
 
-include ':app'
-include ':android-gmaps-addons'
+package com.afrikaburn.app.ui;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+
+import io.realm.Realm;
+
+public class BaseActivity extends AppCompatActivity {
+
+    //This is needed for vector drawables in a inset/layout when you use it in drawableLeft in a textview
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
+    // realm instance for UI actions (could have been in the application?
+    protected Realm realmForUi;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        realmForUi = Realm.getDefaultInstance();
+    }
+
+    @Override
+    protected void onDestroy() {
+        realmForUi.close();
+        super.onDestroy();
+    }
+}

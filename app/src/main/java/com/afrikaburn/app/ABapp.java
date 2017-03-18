@@ -22,5 +22,36 @@
  * SOFTWARE.
  */
 
-include ':app'
-include ':android-gmaps-addons'
+package com.afrikaburn.app;
+
+import android.app.Application;
+
+import com.facebook.stetho.Stetho;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
+/**
+ * Created by maia on 2017/03/02.
+ */
+
+public class ABapp extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .deleteRealmIfMigrationNeeded() //If the schema changes, whack the db
+                .build();
+        Realm.setDefaultConfiguration(config);
+
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+                        .build());
+    }
+}

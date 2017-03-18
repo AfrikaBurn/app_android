@@ -22,5 +22,20 @@
  * SOFTWARE.
  */
 
-include ':app'
-include ':android-gmaps-addons'
+package com.afrikaburn.app.model;
+
+import java.util.Date;
+
+import io.realm.RealmModel;
+import io.realm.annotations.RealmClass;
+
+/**
+ * Class to store the home location
+ * Created by maia on 2017/03/02.
+ */
+@RealmClass
+public class DataHistory implements RealmModel {
+
+    public Date lastDataFetch;
+    public boolean busyFetching;
+}

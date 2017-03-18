@@ -23,7 +23,7 @@
 ~ SOFTWARE.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="net.maiatoday.afrikaburn">
+          package="com.afrikaburn.app">
 
     <!--
              The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -35,7 +35,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
-        android:name=".ABapp"
+        android:name="com.afrikaburn.app.ABapp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -44,12 +44,12 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.afrikaburn.app.ui.MainActivity"
             android:label="@string/app_name">
         </activity>
 
         <activity
-            android:name=".ui.SplashActivity"
+            android:name="com.afrikaburn.app.ui.SplashActivity"
             android:label="@string/app_name"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -60,20 +60,20 @@
         </activity>
 
         <activity
-            android:name=".ui.DetailActivity"
+            android:name="com.afrikaburn.app.ui.DetailActivity"
             android:label="@string/title_activity_detail"
             android:launchMode="singleTop"/>
 
         <activity
-            android:name=".ui.AboutActivity"/>
+            android:name="com.afrikaburn.app.ui.AboutActivity"/>
 
         <activity
-            android:name=".ui.MapsActivity"
+            android:name="com.afrikaburn.app.ui.MapsActivity"
             android:label="@string/title_activity_maps">
         </activity>
 
         <service
-            android:name=".service.DataFetchService"
+            android:name="com.afrikaburn.app.service.DataFetchService"
             android:exported="true"
             android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
             <intent-filter>

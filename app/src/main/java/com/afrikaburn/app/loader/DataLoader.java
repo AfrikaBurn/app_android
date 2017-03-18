@@ -22,5 +22,14 @@
  * SOFTWARE.
  */
 
-include ':app'
-include ':android-gmaps-addons'
+package com.afrikaburn.app.loader;
+
+/**
+ * Created by maia on 2017/03/11.
+ */
+
+public interface DataLoader {
+    void addDefaultData();
+
+    void fetchDataFromNetwork();
+}

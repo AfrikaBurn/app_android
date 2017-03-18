@@ -22,5 +22,31 @@
  * SOFTWARE.
  */
 
-include ':app'
-include ':android-gmaps-addons'
+package com.afrikaburn.app.util;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.support.annotation.ColorRes;
+import android.support.v4.content.ContextCompat;
+
+/**
+ * Utilities related to Color
+ * Created by maia on 2017/03/05.
+ */
+
+public class ColorUtils {
+
+    public static float[] getHsvFromColor(String colorString) {
+        float[] hsv = new float[3];
+        int color = Color.parseColor(colorString);
+        Color.colorToHSV(color, hsv);
+        return hsv;
+    }
+
+    public static float[] getHsvFromColorId(Context context, @ColorRes int colorId) {
+        float[] hsv = new float[3];
+        int color = ContextCompat.getColor(context, colorId);
+        Color.colorToHSV(color, hsv);
+        return hsv;
+    }
+}

@@ -22,5 +22,37 @@
  * SOFTWARE.
  */
 
-include ':app'
-include ':android-gmaps-addons'
+package com.afrikaburn.app.util;
+
+import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.afrikaburn.app.model.Entry;
+
+/**
+ * Created by maia on 2017/03/04.
+ */
+
+public class BindingUtils {
+
+    @BindingAdapter("imageSrc")
+    public static void setImageDrawable(ImageView view, Drawable drawable) {
+        view.setImageDrawable(drawable);
+    }
+
+    @BindingAdapter("whatBackground")
+    public static void setViewBackground(View view, int what){
+        int colorId = Entry.getDarkColorId(what);
+        view.setBackgroundColor(ContextCompat.getColor(view.getContext(), colorId));
+    }
+
+    @BindingAdapter("whatTextColor")
+    public static void setViewBackground(TextView view, int what){
+        int colorId = Entry.whatColorId(what);
+        view.setTextColor(ContextCompat.getColor(view.getContext(), colorId));
+    }
+}

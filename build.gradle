@@ -27,8 +27,9 @@
 buildscript {
     ext {
         sdkVersion = 25
+        minSdk = 16
         buildTools = '25.0.2'
-        supportLibraryVersion = '25.2.0'
+        supportLibraryVersion = '25.3.0'
 
         realmVersion = '3.0.0'
         realmAdapterVersion = '2.0.0'
