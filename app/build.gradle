@@ -38,7 +38,7 @@ android {
         minSdkVersion minSdk
         targetSdkVersion sdkVersion
         versionCode 1
-        versionName "0.1.0-alpha"
+        versionName "0.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         buildConfigField 'String', 'DATA_URL', '"https://new.afrikaburn.com/api/general"'
