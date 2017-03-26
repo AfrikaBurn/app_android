@@ -62,7 +62,7 @@
         <activity
             android:name="com.afrikaburn.app.ui.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:launchMode="singleTop"/>
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name="com.afrikaburn.app.ui.AboutActivity"/>
