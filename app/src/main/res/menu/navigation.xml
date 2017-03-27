@@ -26,32 +26,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_theme_camps"
-        android:icon="@drawable/ic_theme"
-        android:title="@string/title_theme"/>
+        android:id="@+id/navigation_browse"
+        android:icon="@drawable/ic_main"
+        android:title="@string/title_browse"/>
     <item
-        android:id="@+id/navigation_artworks"
-        android:icon="@drawable/ic_artworks"
-        android:title="@string/title_artworks"/>
-
-    <item
-        android:id="@+id/navigation_infrastructure"
-        android:icon="@drawable/ic_infrastructure"
-        android:title="@string/title_infrastructure"/>
-
-    <!--<item-->
-        <!--android:id="@+id/navigation_performance"-->
-        <!--android:icon="@drawable/ic_performances"-->
-        <!--android:title="@string/title_performance"/>-->
-
-    <item
-        android:id="@+id/navigation_burn"
-        android:icon="@drawable/ic_burns"
-        android:title="@string/title_burns"/>
-    <!--<item-->
-        <!--android:id="@+id/navigation_mutant_vehicles"-->
-        <!--android:icon="@drawable/ic_mutant_vehicles"-->
-        <!--android:title="@string/title_mutant_vehicles"/>-->
+        android:id="@+id/navigation_now"
+        android:icon="@drawable/ic_now"
+        android:title="@string/title_now"/>
     <item
         android:id="@+id/navigation_favourites"
         android:icon="@drawable/ic_favorite"
