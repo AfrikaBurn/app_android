@@ -34,8 +34,8 @@ buildscript {
         realmVersion = '3.0.0'
         realmAdapterVersion = '2.0.0'
 
-        playServicesVersion = '10.2.0'
-        firebaseVersion = '10.2.0'
+        playServicesVersion = '10.2.1'
+        firebaseVersion = '10.2.1'
     }
     repositories {
         jcenter()
