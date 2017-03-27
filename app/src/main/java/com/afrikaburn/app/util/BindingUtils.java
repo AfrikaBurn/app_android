@@ -44,6 +44,11 @@ public class BindingUtils {
         view.setImageDrawable(drawable);
     }
 
+    @BindingAdapter("imageSrcId")
+    public static void setImageDrawableId(ImageView view, int drawableId) {
+        view.setImageResource(drawableId);
+    }
+
     @BindingAdapter("whatBackground")
     public static void setViewBackground(View view, int what){
         int colorId = Entry.getDarkColorId(what);

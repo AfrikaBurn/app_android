@@ -66,8 +66,8 @@
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             app:itemBackground="@color/colorPrimary"
-            app:itemIconTint="@android:color/white"
-            app:itemTextColor="@android:color/white"
+            app:itemIconTint="@drawable/nav_selector"
+            app:itemTextColor="@drawable/nav_selector"
             app:layout_behavior=".ui.behaviours.BottomNavigationBehavior"
             app:menu="@menu/navigation"/>
 
