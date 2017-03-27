@@ -24,15 +24,15 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#ff390c13</color>
-    <color name="colorPrimaryDark">#ff150205</color>
-    <color name="colorAccent">#ffF36C56</color>
+    <color name="colorPrimary">#5C004C</color>
+    <color name="colorPrimaryDark">#30002B</color>
+    <color name="colorAccent">#D6003E</color>
 
-    <color name="colour_burnback_dark">#ff110d0d</color>
-    <color name="colour_burnback_mid">#ff390c13</color>
-    <color name="colour_fire_engine">#b71c1c</color>
+    <color name="colour_burnback_dark">#30002B</color>
+    <color name="colour_burnback_mid">#5C004C</color>
+    <color name="colour_fire_engine">#D6003E</color>
     <color name="colour_construction_yellow">#ffd500</color>
-    <color name="colour_oros">#fb8c00</color>
+    <color name="colour_oros">#ED6629</color>
     <color name="colour_pawpaw">#ffF36C56</color>
     <color name="colour_bubblegum">#f06292</color>
     <color name="colour_portapool">#42a5f5</color>
@@ -40,14 +40,14 @@
     <color name="colour_bishop_lilac">#7c4dff</color>
     <color name="colour_sun_cream">#ffe0b2</color>
     <color name="colour_ash">#616161</color>
-    <color name="colour_splash">#ff7043</color>
+    <color name="colour_splash">#30002B</color>
 
 
-    <color name="colour_all">#ff390c13</color>
-    <color name="colour_burn">#b71c1c</color>
+    <color name="colour_all">#5C004C</color>
+    <color name="colour_burn">#FFC370</color>
     <color name="colour_performance">#ffd500</color>
-    <color name="colour_clan">#fb8c00</color>
-    <color name="colour_favourite">#f06292</color>
+    <color name="colour_clan">#ED6629</color>
+    <color name="colour_favourite">#D6003E</color>
     <color name="colour_artwork">#42a5f5</color>
     <color name="colour_mutant_vehicle">#69f0ae</color>
     <color name="colour_camp">#7c4dff</color>
